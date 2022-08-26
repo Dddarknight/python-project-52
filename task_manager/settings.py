@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['webserver']
 
-SECRET_KEY = os.environ('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
 
 # Application definition
