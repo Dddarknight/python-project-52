@@ -64,6 +64,14 @@ setproctitle = ["setproctitle"]
 tornado = ["tornado (>=0.2)"]
 
 [[package]]
+name = "psycopg2"
+version = "2.9.3"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.2"
 description = "A non-validating SQL parser."
@@ -82,7 +90,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8"
-content-hash = "e8f4a53a8106b4d3b24347c737aab50d66dafc746ca90784275301fcb4108761"
+content-hash = "925ec930880323a58c1483a8aeb0666e1942148c28f59e0cf9a0abc0f8993acd"
 
 [metadata.files]
 asgiref = []
@@ -90,5 +98,6 @@ asgiref = []
 dj-database-url = []
 django = []
 gunicorn = []
+psycopg2 = []
 sqlparse = []
 tzdata = []
