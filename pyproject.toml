@@ -6,6 +6,9 @@ authors = ["Dddarknight <9801677@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
+dj-database-url = "^1.0.0"
+Django = "^4.1"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 
