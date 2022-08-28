@@ -4,7 +4,8 @@ backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.8"
 beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.7" \
     --hash=sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30 \
     --hash=sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693
-dj-database-url==1.0.0
+dj-database-url==1.0.0 \
+    --hash=sha256:cd354a3b7a9136d78d64c17b2aec369e2ae5616fbca6bfbe435ef15bb372ce39
 django-bootstrap4==22.2; python_version >= "3.7"
 django==4.1; python_version >= "3.8"
 gunicorn==20.1.0; python_version >= "3.5"
