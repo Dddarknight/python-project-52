@@ -8,7 +8,8 @@ dj-database-url==1.0.0 \
     --hash=sha256:cd354a3b7a9136d78d64c17b2aec369e2ae5616fbca6bfbe435ef15bb372ce39
 django-bootstrap4==22.2; python_version >= "3.7" \
     --hash=sha256:ad00ff90e6bd002155516b32047c40df15f533fac49da66d8882995adcb13552
-django==4.1; python_version >= "3.8"
+django==4.1; python_version >= "3.8" \
+    --hash=sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a
 gunicorn==20.1.0; python_version >= "3.5"
 psycopg2==2.9.3; python_version >= "3.6"
 soupsieve==2.3.2.post1; python_full_version >= "3.6.0" and python_version >= "3.7" \
