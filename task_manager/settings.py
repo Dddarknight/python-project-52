@@ -155,7 +155,7 @@ BOOTSTRAP4 = {
 
     'success_css_class': 'is-valid',
 
-    'formset_renderers':{
+    'formset_renderers': {
         'default': 'bootstrap4.renderers.FormsetRenderer',
     },
     'form_renderers': {
