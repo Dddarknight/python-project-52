@@ -1,1 +1,30 @@
-<h1>Hello, {{ friend }}!</h1>
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <ul class="navbar nav-masthead navbar-expand-lg">
+        <li class="navbar-brand">
+        <a class="nav-link" href="#">{% translate "Пользователи"%}</a>
+        </li>
+        <li class="navbar-brand">
+        <a class="nav-link" href="#">{% translate "Вход"%}</a>
+        </li>
+        <li class="navbar-brand">
+        <a class="nav-link" href="#">{% translate "Регистрация"%}</a>
+        </li>
+    </ul>
+</body>
+</html>
