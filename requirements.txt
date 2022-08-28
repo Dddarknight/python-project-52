@@ -12,7 +12,8 @@ django==4.1; python_version >= "3.8" \
     --hash=sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a
 gunicorn==20.1.0; python_version >= "3.5"\
     --hash=sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e
-psycopg2==2.9.3; python_version >= "3.6"
+psycopg2==2.9.3; python_version >= "3.6" \
+    --hash=sha256:8e841d1bf3434da985cc5ef13e6f75c8981ced601fd70cc6bf33351b91562981
 soupsieve==2.3.2.post1; python_full_version >= "3.6.0" and python_version >= "3.7" \
     --hash=sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759 \
     --hash=sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d
