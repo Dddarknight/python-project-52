@@ -48,11 +48,12 @@ class UserRegistrationForm(UserCreationForm):
                                 help_text=_("Для подтверждения введите,"
                                             " пожалуйста, пароль ещё раз."),
                                 widget=forms.PasswordInput(
-                                    attrs={'placeholder': _(
-                                               'Подтверждение пароля'),
-                                           'class': 'form-control',
-                                           'data-toggle': 'password',
-                                           'id': 'password', }))
+                                    attrs={
+                                        'placeholder': _('Подтверждение '
+                                                         'пароля'),
+                                        'class': 'form-control',
+                                        'data-toggle': 'password',
+                                        'id': 'password', }))
 
     class Meta:
         model = HexletUser
