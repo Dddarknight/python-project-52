@@ -5,7 +5,8 @@ install:
 	poetry install
 
 test-coverage:
-	poetry run pytest --cov=. --cov-report xml
+	poetry run coverage run --source='.' manage.py test tests
+	poetry run coverage report
 
 build:
 	poetry build
