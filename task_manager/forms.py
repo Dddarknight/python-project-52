@@ -31,8 +31,8 @@ class UserRegistrationForm(UserCreationForm):
                                            'Только буквы, цифры и '
                                            'символы @/./+/-/_.'),
                                widget=forms.TextInput(
-                                attrs={'placeholder': _('Имя пользователя'),
-                                       'class': 'form-control', }))
+                                   attrs={'placeholder': _('Имя пользователя'),
+                                          'class': 'form-control', }))
     password1 = forms.CharField(label=_('Пароль'),
                                 required=True,
                                 help_text=_(
@@ -49,7 +49,7 @@ class UserRegistrationForm(UserCreationForm):
                                             " пожалуйста, пароль ещё раз."),
                                 widget=forms.PasswordInput(
                                     attrs={'placeholder': _(
-                                        'Подтверждение пароля'),
+                                               'Подтверждение пароля'),
                                            'class': 'form-control',
                                            'data-toggle': 'password',
                                            'id': 'password', }))
