@@ -40,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -69,6 +70,7 @@ else:
 
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
+AUTH_USER_MODEL = 'task_manager.HexletUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -78,6 +80,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.'
                 'MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 3,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.'
@@ -105,6 +110,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'
 
 BOOTSTRAP4 = {
     "css_url": {
