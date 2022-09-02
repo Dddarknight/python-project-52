@@ -1,4 +1,3 @@
-from getopt import gnu_getopt
 from django.utils.translation import gettext as _
 from django.views import generic
 from django.views.generic.edit import FormView
@@ -34,7 +33,7 @@ class UserRegistrationFormView(FormView):
             return redirect('login')
         messages.error(request, _("При регистрации произошла ошибка"))
         return render(request, self.template_name, {'form': form})
-    
+
     def get(self, request):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})

@@ -16,13 +16,13 @@ class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(label=_('Имя'),
                                  required=True,
                                  widget=forms.TextInput(
-                                    attrs={'placeholder': _('Имя'),
-                                           'class': 'form-control',}))
+                                     attrs={'placeholder': _('Имя'),
+                                            'class': 'form-control', }))
     last_name = forms.CharField(label=_('Фамилия'),
                                 required=True,
                                 widget=forms.TextInput(
                                     attrs={'placeholder': _('Фамилия'),
-                                           'class': 'form-control',}))
+                                           'class': 'form-control', }))
     username = forms.CharField(label=_('Имя пользователя'),
                                max_length=150,
                                required=True,
@@ -32,7 +32,7 @@ class UserRegistrationForm(UserCreationForm):
                                            'символы @/./+/-/_.'),
                                widget=forms.TextInput(
                                 attrs={'placeholder': _('Имя пользователя'),
-                                       'class': 'form-control',}))
+                                       'class': 'form-control', }))
     password1 = forms.CharField(label=_('Пароль'),
                                 required=True,
                                 help_text=_(
@@ -42,17 +42,17 @@ class UserRegistrationForm(UserCreationForm):
                                     attrs={'placeholder': _('Пароль'),
                                            'class': 'form-control',
                                            'data-toggle': 'password',
-                                           'id': 'password',}))
+                                           'id': 'password', }))
     password2 = forms.CharField(label=_('Подтверждение пароля'),
                                 required=True,
                                 help_text=_("Для подтверждения введите,"
                                             " пожалуйста, пароль ещё раз."),
                                 widget=forms.PasswordInput(
-                                    attrs={'placeholder': _('Подтверждение пароля'),
+                                    attrs={'placeholder': _(
+                                        'Подтверждение пароля'),
                                            'class': 'form-control',
                                            'data-toggle': 'password',
-                                           'id': 'password',}))
-
+                                           'id': 'password', }))
 
     class Meta:
         model = HexletUser
