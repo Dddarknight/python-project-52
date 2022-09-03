@@ -4,15 +4,13 @@ backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.8"
 beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.7" \
     --hash=sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30 \
     --hash=sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693
-coverage==6.4.4; python_version >= "3.7"
 dj-database-url==1.0.0 \
     --hash=sha256:cd354a3b7a9136d78d64c17b2aec369e2ae5616fbca6bfbe435ef15bb372ce39
-django-bootstrap4==22.2; python_version >= "3.7" \ 
+django-bootstrap4==22.2; python_version >= "3.7" \
     --hash=sha256:ad00ff90e6bd002155516b32047c40df15f533fac49da66d8882995adcb13552
-django-debug-toolbar==3.6.0; python_version >= "3.7"
 django==4.1; python_version >= "3.8" \
     --hash=sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a
-gunicorn==20.1.0; python_version >= "3.5" \
+gunicorn==20.1.0; python_version >= "3.5"\
     --hash=sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e
 psycopg2==2.9.3; python_version >= "3.6" \
     --hash=sha256:8e841d1bf3434da985cc5ef13e6f75c8981ced601fd70cc6bf33351b91562981
