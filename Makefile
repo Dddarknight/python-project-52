@@ -7,7 +7,7 @@ install:
 test-coverage:
 	poetry run coverage run --source='.' manage.py test tests
 	poetry run coverage report
-	poetry run coverage html
+	poetry run coverage xml
 
 build:
 	poetry build
