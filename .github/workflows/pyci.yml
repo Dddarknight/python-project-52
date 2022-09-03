@@ -31,5 +31,5 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         with:
           coverageCommand: make test-coverage
-          coverageLocations: ${{github.workspace}}/*.htmlcov/index.html
+          coverageLocations: ${{github.workspace}}/*.htmlcov/index.html:index
           debug: true
