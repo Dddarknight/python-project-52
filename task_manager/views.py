@@ -128,10 +128,11 @@ class StatusesView(ListView):
         return render(request, self.template_name, {
             'object_list': self.model.objects.all()})
 
+
 class StatusCreationFormView(FormView):
     template_name = 'status_create.html'
     form_class = StatusCreationForm
-    
+
     def post(self, request):
         form = self.form_class(request.POST)
         names = list(Statuses.objects.values_list('name', flat=True))
@@ -139,7 +140,8 @@ class StatusCreationFormView(FormView):
             form.save()
             messages.success(request, _("Статус успешно создан"))
             return redirect('statuses')
-        return render(request, self.template_name, {'form': form, 'failed': 'failed'})
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
 
     def get(self, request):
         if not request.user.is_authenticated:
@@ -153,7 +155,7 @@ class StatusCreationFormView(FormView):
 class UpdateStatusView(FormView):
     template_name = 'status_update.html'
     form_class = StatusUpdateForm
-    
+
     def post(self, request, **kwargs):
         status = Statuses.objects.get(id=kwargs['pk'])
         form = self.form_class(request.POST, instance=status)
@@ -162,7 +164,8 @@ class UpdateStatusView(FormView):
             form.save()
             messages.success(request, _("Статус успешно изменён"))
             return redirect('statuses')
-        return render(request, self.template_name, {'form': form, 'failed': 'failed'})
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
 
     def get(self, request, **kwargs):
         if not request.user.is_authenticated:

@@ -76,11 +76,12 @@ class StatusCreationForm(ModelForm):
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
-                                      'style':'max-width: 24em', }))
+                                      'style': 'max-width: 24em', }))
+
     class Meta:
         model = Statuses
         fields = ('name',)
-        labels = {'name': _('Имя'),}
+        labels = {'name': _('Имя'), }
 
 
 class StatusUpdateForm(StatusCreationForm):
