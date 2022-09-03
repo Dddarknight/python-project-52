@@ -69,7 +69,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 name = "coverage"
 version = "6.4.4"
 description = "Code coverage measurement for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -312,7 +312,7 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8"
-content-hash = "ae0dc902c6d8225ed59b02cf0f71470404a2b0d2a120f301f3f6cf1d07067f59"
+content-hash = "d559a9a18cd96c339d89fa2673eaa6692c4220a853495d5e9f8a71eb11b15c6a"
 
 [metadata.files]
 asgiref = []
