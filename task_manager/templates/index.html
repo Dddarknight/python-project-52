@@ -23,6 +23,11 @@
                     <li class="navbar-brand">
                         <a class="nav-link" href={% url 'users' %}>{% translate "Пользователи"%}</a>
                     </li>
+                    {% if authenticated %}
+                    <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 {% if authenticated %}
                     <ul class="navbar nav-masthead ml-auto">

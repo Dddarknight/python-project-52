@@ -24,6 +24,9 @@
                     <li class="navbar-brand">
                         <a class="nav-link" href={% url 'users' %}>{% translate "Пользователи"%}</a>
                     </li>
+                    <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
+                    </li>
                 </ul>
                 <ul class="navbar nav-masthead ml-auto">
                     <li class="navbar-brand">
@@ -47,7 +50,7 @@
                     <p>{% translate "Вы уверены, что хотите удалить "%}{{ user.username }}{% translate " ?"%}</p>
                     <form method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary"> {% translate "Да, удалить"%} </button>
+                        <button type="submit" class="btn btn-info"> {% translate "Да, удалить"%} </button>
                     </form>
                 </div>
             {% endblock content %}

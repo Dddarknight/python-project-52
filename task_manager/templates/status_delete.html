@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% translate "Изменение пользователя"%}</title>
+    <title>{% translate "Удаление статуса"%}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div>
@@ -24,14 +24,16 @@
                     <li class="navbar-brand">
                         <a class="nav-link" href={% url 'users' %}>{% translate "Пользователи"%}</a>
                     </li>
+                    <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
+                    </li>
                 </ul>
                 <ul class="navbar nav-masthead ml-auto">
-                    <li class="navbar-brand">
-                        <a class="nav-link" href={% url 'login' %}>{% translate "Вход"%}</a>
-                    </li>
-                    <li class="navbar-brand">
-                        <a class="nav-link" href={% url 'registration' %}>{% translate "Регистрация"%}</a>
-                    </li>
+                    <ul class="navbar nav-masthead ml-auto">
+                        <li class="navbar-brand">
+                            <a class="nav-link" href={% url 'logout' %}>{% translate "Выход"%}</a>
+                        </li>
+                    </ul>
                 </ul>
             </div>
         </nav>
@@ -40,17 +42,19 @@
 
         <div>
             <h1>
-                {% translate "Изменение пользователя"%}
+                {% translate "Удаление статуса"%}
             </h1>
 
             <br>
 
             {% block content %}
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary"> {% translate "Изменить"%} </button>
-                </form>
+                <div>
+                    <p>{% translate "Вы уверены, что хотите удалить "%}{{ status.name }}{% translate " ?"%}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info"> {% translate "Да, удалить"%} </button>
+                    </form>
+                </div>
             {% endblock content %}
         </div>
     </div>

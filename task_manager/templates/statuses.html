@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {% translate "Пользователи"%} </title>
+    <title> {% translate "Статусы"%} </title>
 </head>
 <body>
     <div>
@@ -23,28 +23,15 @@
                     <li class="navbar-brand">
                         <a class="nav-link" href={% url 'users' %}>{% translate "Пользователи"%}</a>
                     </li>
-                    {% if authenticated %}
-                        <li class="navbar-brand">
-                            <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
-                        </li>
-                    {% endif %}
+                    <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
+                    </li>
                 </ul>
-                {% if authenticated %}
                     <ul class="navbar nav-masthead ml-auto">
                         <li class="navbar-brand">
                             <a class="nav-link" href={% url 'logout' %}>{% translate "Выход"%}</a>
                         </li>
                     </ul>    
-                {% else %}
-                    <ul class="navbar nav-masthead ml-auto">
-                        <li class="navbar-brand">
-                            <a class="nav-link" href={% url 'login' %}>{% translate "Вход"%}</a>
-                        </li>
-                        <li class="navbar-brand">
-                            <a class="nav-link" href={% url 'registration' %}>{% translate "Регистрация"%}</a>
-                        </li>
-                    </ul>
-                {% endif %}
             </div>
         </nav>
 
@@ -52,35 +39,33 @@
 
         <div>
             <h1>
-                {% translate "Пользователи"%}
+                {% translate "Статусы"%}
             </h1>
         
             <br>
+            
+            <a class="nav-link" href={% url 'status_create' %}>Создать статус</a>
 
             <table class="table table-striped table-dark">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">{% translate "Имя пользователя"%}</th>
-                        <th scope="col">{% translate "Полное имя"%}</th>
+                        <th scope="col">{% translate "Имя"%}</th>
                         <th scope="col">{% translate "Дата создания"%}</th>
                     </tr>
                 </thead>
                 <tbody>
-                        {% for user in object_list %}
-                        {% if user.is_superuser == False %}
+                        {% for status in object_list %}
                         <tr>
-                            <td> {{ user.id }} </td>
-                            <td> {{ user.username }} </td>
-                            <td> {{ user.first_name }} {{ user.last_name }} </td>
-                            <td> {{ user.date_joined }} </td>
+                            <td> {{ status.id }} </td>
+                            <td> {{ status.name }} </td>
+                            <td> {{ status.created_at }} </td>
                             <td>
-                                <a href="/users/{{ user.id }}/update/"> {% translate "Изменить"%} </a>
+                                <a href="/statuses/{{ status.id }}/update/"> {% translate "Изменить"%} </a>
                                 <br>
-                                <a href="/users/{{ user.id }}/delete/"> {% translate "Удалить"%} </a>
+                                <a href="/statuses/{{ status.id }}/delete/"> {% translate "Удалить"%} </a>
                             </td>
                         </tr>
-                        {% endif %}
                         {% endfor %}
                 </tbody>
             </table>

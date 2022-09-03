@@ -1,5 +1,5 @@
 from django.test import TestCase
-from task_manager.models import HexletUser
+from task_manager.models import HexletUser, Statuses
 from task_manager.forms import UserRegistrationForm
 from django.test import Client
 
@@ -79,3 +79,25 @@ class UserTest(TestCase):
         for user in HexletUser.objects.all():
             users.append(user)
         assert not users
+
+    def test_create_status(self):
+        c = Client()
+        status_data = {'name': "status1"}
+        c.post('/statuses/create/', status_data)
+        assert Statuses.objects.get(id=1).name == "status1"
+
+    def test_update_status(self):
+        c = Client()
+        status = Statuses.objects.create(name="status1")
+        new_data = {'name': "status2"}
+        c.post(f'/statuses/{status.id}/update/', new_data)
+        assert Statuses.objects.get(id=status.id).name == "status2"
+
+    def test_delete_status(self):
+        c = Client()
+        status = Statuses.objects.create(name="status1")
+        c.post(f'/statuses/{status.id}/delete/')
+        statuses = []
+        for status in Statuses.objects.all():
+            statuses.append(status)
+        assert not statuses

@@ -6,15 +6,16 @@
 
 {% bootstrap_messages %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {% translate "Регистрация"%} </title>
+    <title>{% translate "Изменение статуса"%}</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark mb-3 bg-dark">
             <a class="navbar-brand" href="/"> {% translate "Менеджер задач"%}</a>
@@ -23,38 +24,45 @@
                     <li class="navbar-brand">
                         <a class="nav-link" href={% url 'users' %}>{% translate "Пользователи"%}</a>
                     </li>
+                    <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
+                    </li>
                 </ul>
                 <ul class="navbar nav-masthead ml-auto">
-                    <li class="navbar-brand">
-                        <a class="nav-link" href={% url 'login' %}>{% translate "Вход"%}</a>
-                    </li>
-                    <li class="navbar-brand">
-                        <a class="nav-link" href={% url 'registration' %}>{% translate "Регистрация"%}</a>
-                    </li>
+                    <ul class="navbar nav-masthead ml-auto">
+                        <li class="navbar-brand">
+                            <a class="nav-link" href={% url 'logout' %}>{% translate "Выход"%}</a>
+                        </li>
+                    </ul>
                 </ul>
             </div>
         </nav>
+        
         <br>
 
-        <h1>
-            {% translate "Регистрация"%}
-        </h1>
+        <div>
+            <h1>
+                {% translate "Изменение статуса"%}
+            </h1>
 
-        <br>
+            <br>
 
         {% block content %}
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     {{ field.label }}
+                    <br>
                     {{ field }}
-                    {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text }}</small>    
+                    {% if failed %}
+                        <small class="text-danger">{% translate "Task status с таким Имя уже существует."%}</small> 
                     {% endif %}
+                    <br>
                 {% endfor %}
-                <button type="submit" class="btn btn-info"> {% translate "Зарегистрировать"%} </button>
+                <button type="submit" class="btn btn-info btn-lg"> {% translate "Изменить"%} </button>
             </form>
         {% endblock content %}
+        </div>
     </div>
 </body>
 </html>

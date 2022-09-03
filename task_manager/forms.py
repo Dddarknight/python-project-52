@@ -2,14 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from task_manager.models import HexletUser
-
-
-class UsersForm(ModelForm):
-    class Meta:
-        model = HexletUser
-        fields = (
-            'id', 'username', 'last_name', 'date_joined')
+from task_manager.models import HexletUser, Statuses
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -74,4 +67,21 @@ class HexletLoginForm(AuthenticationForm):
 
 
 class HexletUserChangeForm(UserRegistrationForm):
+    pass
+
+
+class StatusCreationForm(ModelForm):
+    name = forms.CharField(label=_('Имя'),
+                           required=True,
+                           widget=forms.TextInput(
+                               attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control',
+                                      'style':'max-width: 24em', }))
+    class Meta:
+        model = Statuses
+        fields = ('name',)
+        labels = {'name': _('Имя'),}
+
+
+class StatusUpdateForm(StatusCreationForm):
     pass
