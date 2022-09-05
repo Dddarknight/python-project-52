@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% translate "Создать статус"%}</title>
+    <title>{% translate "Создать задачу"%}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div>
@@ -45,7 +45,7 @@
 
         <div>
             <h1>
-                {% translate "Создать статус"%}
+                {% translate "Создать задачу"%}
             </h1>
 
             <br>
@@ -57,11 +57,12 @@
                     {{ field.label }}
                     <br>
                     {{ field }}
-                    {% if failed %}
-                        <small class="text-danger">{% translate "Task status с таким Имя уже существует."%}</small> 
+                    {% if failed and field.label == "Имя" %}
+                        <small class="text-danger">{% translate "Task с таким Имя уже существует."%}</small> 
                     {% endif %}
                     <br>
                 {% endfor %}
+                <br>
                 <button type="submit" class="btn btn-info btn-lg"> {% translate "Создать"%} </button>
             </form>
         {% endblock content %}

@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% translate "Создать статус"%}</title>
+    <title>{% translate "Удаление задачи"%}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div>
@@ -45,26 +45,20 @@
 
         <div>
             <h1>
-                {% translate "Создать статус"%}
+                {% translate "Удаление задачи"%}
             </h1>
 
             <br>
 
-        {% block content %}
-            <form method="post">
-                {% csrf_token %}
-                {% for field in form %}
-                    {{ field.label }}
-                    <br>
-                    {{ field }}
-                    {% if failed %}
-                        <small class="text-danger">{% translate "Task status с таким Имя уже существует."%}</small> 
-                    {% endif %}
-                    <br>
-                {% endfor %}
-                <button type="submit" class="btn btn-info btn-lg"> {% translate "Создать"%} </button>
-            </form>
-        {% endblock content %}
+            {% block content %}
+                <div>
+                    <p>{% translate "Вы уверены, что хотите удалить "%}{{ task.name }}{% translate " ?"%}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-info"> {% translate "Да, удалить"%} </button>
+                    </form>
+                </div>
+            {% endblock content %}
         </div>
     </div>
 </body>

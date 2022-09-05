@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {% translate "Статусы"%} </title>
+    <title> {% translate "Задачи"%} </title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div>
@@ -42,31 +42,37 @@
 
         <div>
             <h1>
-                {% translate "Статусы"%}
+                {% translate "Задачи"%}
             </h1>
         
             <br>
             
-            <a class="nav-link" href={% url 'status_create' %}>Создать статус</a>
+            <a class="nav-link" href={% url 'task_create' %}>Создать задачу</a>
 
             <table class="table table-striped table-dark">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">{% translate "Имя"%}</th>
+                        <th scope="col">{% translate "Статус"%}</th>
+                        <th scope="col">{% translate "Автор"%}</th>
+                        <th scope="col">{% translate "Исполнитель"%}</th>
                         <th scope="col">{% translate "Дата создания"%}</th>
                     </tr>
                 </thead>
                 <tbody>
-                        {% for status in object_list %}
+                        {% for task in object_list %}
                         <tr>
-                            <td> {{ status.id }} </td>
-                            <td> {{ status.name }} </td>
-                            <td> {{ status.created_at }} </td>
+                            <td> {{ task.id }} </td>
+                            <td> <a href="/tasks/{{ task.id }}/"> {{ task.name }} </a></td>
+                            <td> {{ task.status }} </td>
+                            <td> {{ task.author }} </td>
+                            <td> {{ task.executor }} </td>
+                            <td> {{ task.created_at }} </td>
                             <td>
-                                <a href="/statuses/{{ status.id }}/update/"> {% translate "Изменить"%} </a>
+                                <a href="/tasks/{{ task.id }}/update/"> {% translate "Изменить"%} </a>
                                 <br>
-                                <a href="/statuses/{{ status.id }}/delete/"> {% translate "Удалить"%} </a>
+                                <a href="/tasks/{{ task.id }}/delete/"> {% translate "Удалить"%} </a>
                             </td>
                         </tr>
                         {% endfor %}

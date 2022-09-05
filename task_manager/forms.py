@@ -2,7 +2,8 @@ from django import forms
 from django.utils.translation import gettext as _
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from task_manager.models import HexletUser, Statuses
+from task_manager.models import HexletUser, Statuses, Tasks
+from django.db.models import Q
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -85,4 +86,41 @@ class StatusCreationForm(ModelForm):
 
 
 class StatusUpdateForm(StatusCreationForm):
+    pass
+
+
+class TaskCreationForm(ModelForm):
+    name = forms.CharField(
+        label=_('Имя'),
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control', }))
+    description = forms.CharField(
+        label=_('Описание'),
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': _('Описание'),
+                                      'class': 'form-control', }))
+    status = forms.ModelChoiceField(
+        label=_('Статус'),
+        required=True,
+        widget=forms.Select(attrs={'placeholder': _('Статус'),
+                                   'style': 'min-height: 50px;', }),
+        queryset=Statuses.objects.all())
+    executor = forms.ModelChoiceField(
+        label=_('Исполнитель'),
+        required=True,
+        widget=forms.Select(attrs={'placeholder': _('Исполнитель'),
+                                   'style': 'min-height: 50px;', }),
+        queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
+
+    class Meta:
+        model = Tasks
+        fields = ('name', 'description', 'status', 'executor')
+        labels = {'name': _('Имя'),
+                  'description': _('Описание'),
+                  'status': _('Статус'),
+                  'executor': _('Исполнитель'), }
+
+
+class TaskUpdateForm(TaskCreationForm):
     pass

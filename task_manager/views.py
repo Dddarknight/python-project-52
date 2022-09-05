@@ -2,9 +2,10 @@ from django.utils.translation import gettext as _
 from django.views import generic
 from django.views.generic.edit import FormView
 from task_manager.forms import UserRegistrationForm, HexletLoginForm
-from task_manager.forms import HexletUserChangeForm, StatusCreationForm
-from task_manager.forms import StatusUpdateForm
-from task_manager.models import HexletUser, Statuses
+from task_manager.forms import HexletUserChangeForm
+from task_manager.forms import StatusCreationForm, StatusUpdateForm
+from task_manager.forms import TaskCreationForm, TaskUpdateForm
+from task_manager.models import HexletUser, Statuses, Tasks
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -99,6 +100,14 @@ class DeleteView(generic.TemplateView):
 
     def post(self, request, **kwargs):
         user = HexletUser.objects.get(id=kwargs['user_id'])
+        if user.id in list(
+            Tasks.objects.values_list('executor', flat=True)) or (
+            user.id in list(Tasks.objects.values_list('author', flat=True))
+        ):
+            messages.error(
+                request, _("Невозможно удалить пользователя, "
+                           "потому что он используется"))
+            return redirect('users')
         user.delete()
         messages.success(request, _("Пользователь успешно удалён"))
         return redirect('users')
@@ -181,6 +190,11 @@ class DeleteStatusView(generic.TemplateView):
 
     def post(self, request, **kwargs):
         status = Statuses.objects.get(id=kwargs['pk'])
+        if status.id in list(Tasks.objects.values_list('status', flat=True)):
+            messages.error(
+                request, _("Невозможно удалить статус, "
+                           "потому что он используется"))
+            return redirect('statuses')
         status.delete()
         messages.success(request, _("Пользователь успешно удалён"))
         return redirect('statuses')
@@ -190,4 +204,110 @@ class DeleteStatusView(generic.TemplateView):
             messages.error(
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
+
         return render(request, self.template_name)
+
+
+class TasksView(ListView):
+    template_name = 'tasks.html'
+    model = Tasks
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        return render(request, self.template_name, {
+            'object_list': self.model.objects.all()})
+
+
+class TaskCreationFormView(FormView):
+    template_name = 'task_create.html'
+    form_class = TaskCreationForm
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        names = list(Tasks.objects.values_list('name', flat=True))
+        if form.data['name'] not in names:
+            name = form.data['name']
+            form.save()
+            task = Tasks.objects.get(name=name)
+            task.author = HexletUser.objects.get(id=request.user.id)
+            task.save()
+            messages.success(request, _("Задача успешно создана"))
+            return redirect('tasks')
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+class UpdateTaskView(FormView):
+    template_name = 'task_update.html'
+    form_class = TaskUpdateForm
+
+    def post(self, request, **kwargs):
+        task = Tasks.objects.get(id=kwargs['pk'])
+        old_task_name = task.name
+        form = self.form_class(request.POST, instance=task)
+        names = list(Tasks.objects.values_list('name', flat=True))
+        if form.data['name'] not in names or (
+                form.data['name'] == old_task_name):
+            form.save()
+            messages.success(request, _("Задача успешно изменена"))
+            return redirect('tasks')
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
+
+    def get(self, request, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+class DeleteTaskView(generic.TemplateView):
+    template_name = 'task_delete.html'
+
+    def post(self, request, **kwargs):
+        task = Tasks.objects.get(id=kwargs['pk'])
+        if request.user.id != task.author.id:
+            messages.error(
+                request, _("Задачу может удалить только её автор."))
+            return redirect('tasks')
+        task.delete()
+        messages.success(request, _("Задача успешно удалена"))
+        return redirect('tasks')
+
+    def get(self, request, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        task = Tasks.objects.get(id=kwargs['pk'])
+        author = task.author
+        if request.user.id != author.id:
+            messages.error(
+                request, _("Задачу может удалить только её автор."))
+            return redirect('tasks')
+        return render(request, self.template_name)
+
+
+class TaskDescriptionView(generic.TemplateView):
+    template_name = 'task_description.html'
+
+    def get(self, request, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        task = Tasks.objects.get(id=kwargs['pk'])
+        return render(request, self.template_name, {'task': task})

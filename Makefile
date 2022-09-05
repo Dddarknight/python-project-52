@@ -13,4 +13,4 @@ build:
 	poetry build
 
 test:
-	poetry run pytest
+	./manage.py test tests
