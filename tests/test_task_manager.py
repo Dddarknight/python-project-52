@@ -141,11 +141,11 @@ class UserTest(TestCase):
                                      status=status,
                                      author=user1,
                                      executor=user2)
-        task2 = Tasks.objects.create(name="task2",
-                                     description='some_description2',
-                                     status=status,
-                                     author=user2,
-                                     executor=user1)
+        Tasks.objects.create(name="task2",
+                             description='some_description2',
+                             status=status,
+                             author=user2,
+                             executor=user1)
         new_data = {'name': "task2",
                     'description': 'some_description',
                     'status': status.id,
@@ -220,11 +220,11 @@ class UserTest(TestCase):
         user2_id = user2.id
         status = Statuses.objects.create(name="status1")
         status_id = status.id
-        task = Tasks.objects.create(name="task",
-                                    description='some_description',
-                                    status=status,
-                                    author=user1,
-                                    executor=user2)
+        Tasks.objects.create(name="task",
+                             description='some_description',
+                             status=status,
+                             author=user1,
+                             executor=user2)
         c.force_login(user1)
         c.post(f'/users/{user1.id}/delete/')
         assert HexletUser.objects.get(id=user1_id).username == "johnblack"
