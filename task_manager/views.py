@@ -5,7 +5,8 @@ from task_manager.forms import UserRegistrationForm, HexletLoginForm
 from task_manager.forms import HexletUserChangeForm
 from task_manager.forms import StatusCreationForm, StatusUpdateForm
 from task_manager.forms import TaskCreationForm, TaskUpdateForm
-from task_manager.models import HexletUser, Statuses, Tasks
+from task_manager.forms import LabelCreationForm, LabelUpdateForm
+from task_manager.models import HexletUser, Statuses, Tasks, Labels
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -70,7 +71,7 @@ class UpdateView(FormView):
     form_class = HexletUserChangeForm
 
     def post(self, request, **kwargs):
-        user = HexletUser.objects.get(id=kwargs['user_id'])
+        user = HexletUser.objects.get(id=kwargs['pk'])
         form = self.form_class(request.POST, instance=user)
         if form.is_valid():
             form.save()
@@ -86,7 +87,7 @@ class UpdateView(FormView):
             messages.error(
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
-        if not request.user._get_pk_val() == kwargs['user_id']:
+        if not request.user._get_pk_val() == kwargs['pk']:
             messages.error(
                 request, _(
                     "У вас нет прав для изменения другого пользователя."))
@@ -99,7 +100,7 @@ class DeleteView(generic.TemplateView):
     template_name = 'delete.html'
 
     def post(self, request, **kwargs):
-        user = HexletUser.objects.get(id=kwargs['user_id'])
+        user = HexletUser.objects.get(id=kwargs['pk'])
         if user.id in list(
             Tasks.objects.values_list('executor', flat=True)) or (
             user.id in list(Tasks.objects.values_list('author', flat=True))
@@ -113,16 +114,17 @@ class DeleteView(generic.TemplateView):
         return redirect('users')
 
     def get(self, request, **kwargs):
+        user = HexletUser.objects.get(id=kwargs['pk'])
         if not request.user.is_authenticated:
             messages.error(
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
-        if not request.user._get_pk_val() == kwargs['user_id']:
+        if not request.user._get_pk_val() == kwargs['pk']:
             messages.error(
                 request, _(
                     "У вас нет прав для изменения другого пользователя."))
             return redirect('users')
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'user': user})
 
 
 class StatusesView(ListView):
@@ -167,9 +169,11 @@ class UpdateStatusView(FormView):
 
     def post(self, request, **kwargs):
         status = Statuses.objects.get(id=kwargs['pk'])
+        old_status_name = status.name
         form = self.form_class(request.POST, instance=status)
         names = list(Statuses.objects.values_list('name', flat=True))
-        if form.data['name'] not in names:
+        if form.data['name'] not in names or (
+                form.data['name'] == old_status_name):
             form.save()
             messages.success(request, _("Статус успешно изменён"))
             return redirect('statuses')
@@ -200,12 +204,13 @@ class DeleteStatusView(generic.TemplateView):
         return redirect('statuses')
 
     def get(self, request, **kwargs):
+        status = Statuses.objects.get(id=kwargs['pk'])
         if not request.user.is_authenticated:
             messages.error(
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
 
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'status': status})
 
 
 class TasksView(ListView):
@@ -229,11 +234,11 @@ class TaskCreationFormView(FormView):
         form = self.form_class(request.POST)
         names = list(Tasks.objects.values_list('name', flat=True))
         if form.data['name'] not in names:
-            name = form.data['name']
-            form.save()
-            task = Tasks.objects.get(name=name)
+            task = form.save(commit=False)
             task.author = HexletUser.objects.get(id=request.user.id)
             task.save()
+            task.labels.set(request.POST.getlist('labels'))
+            form.save_m2m()
             messages.success(request, _("Задача успешно создана"))
             return redirect('tasks')
         return render(request, self.template_name, {
@@ -298,7 +303,7 @@ class DeleteTaskView(generic.TemplateView):
             messages.error(
                 request, _("Задачу может удалить только её автор."))
             return redirect('tasks')
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'task': task})
 
 
 class TaskDescriptionView(generic.TemplateView):
@@ -310,4 +315,92 @@ class TaskDescriptionView(generic.TemplateView):
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
         task = Tasks.objects.get(id=kwargs['pk'])
-        return render(request, self.template_name, {'task': task})
+        return render(request, self.template_name, {
+                         'task': task,
+                         'labels': task.labels.all()})
+
+
+class LabelsView(ListView):
+    template_name = 'labels.html'
+    model = Labels
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        return render(request, self.template_name, {
+            'object_list': self.model.objects.all()})
+
+
+class LabelCreationFormView(FormView):
+    template_name = 'label_create.html'
+    form_class = LabelCreationForm
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        names = list(Labels.objects.values_list('name', flat=True))
+        if form.data['name'] not in names:
+            form.save()
+            messages.success(request, _("Метка успешно создана"))
+            return redirect('labels')
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+class UpdateLabelView(FormView):
+    template_name = 'label_update.html'
+    form_class = LabelUpdateForm
+
+    def post(self, request, **kwargs):
+        label = Labels.objects.get(id=kwargs['pk'])
+        old_label_name = label.name
+        form = self.form_class(request.POST, instance=label)
+        names = list(Labels.objects.values_list('name', flat=True))
+        if form.data['name'] not in names or (
+                form.data['name'] == old_label_name):
+            form.save()
+            messages.success(request, _("Метка успешно изменена"))
+            return redirect('labels')
+        return render(request, self.template_name, {
+            'form': form, 'failed': 'failed'})
+
+    def get(self, request, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+class DeleteLabelView(generic.TemplateView):
+    template_name = 'label_delete.html'
+
+    def post(self, request, **kwargs):
+        label = Labels.objects.get(id=kwargs['pk'])
+        for task in Tasks.objects.all():
+            if label in task.labels.all():
+                messages.error(
+                    request, _("Невозможно удалить метку, "
+                               "потому что она используется"))
+                return redirect('labels')
+        label.delete()
+        messages.success(request, _("Метка успешно удалена"))
+        return redirect('labels')
+
+    def get(self, request, **kwargs):
+        label = Labels.objects.get(id=kwargs['pk'])
+        if not request.user.is_authenticated:
+            messages.error(
+                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+            return redirect('login')
+        return render(request, self.template_name, {'label': label})

@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from task_manager.models import HexletUser, Statuses, Tasks
+from task_manager.models import HexletUser, Statuses, Tasks, Labels
 from django.db.models import Q
 
 
@@ -65,6 +65,8 @@ class HexletLoginForm(AuthenticationForm):
     class Meta:
         model = HexletUser
         fields = ['username', 'password']
+        labels = {'username': _('Имя пользователя'),
+                  'password': _('Пароль'), }
 
 
 class HexletUserChangeForm(UserRegistrationForm):
@@ -94,33 +96,58 @@ class TaskCreationForm(ModelForm):
         label=_('Имя'),
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Имя'),
-                                      'class': 'form-control', }))
+                                      'class': 'form-control',
+                                      'style': 'width: 800px;', }))
     description = forms.CharField(
         label=_('Описание'),
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Описание'),
-                                      'class': 'form-control', }))
+                                      'class': 'form-control',
+                                      'style': 'width: 800px;', }))
     status = forms.ModelChoiceField(
         label=_('Статус'),
         required=True,
-        widget=forms.Select(attrs={'placeholder': _('Статус'),
-                                   'style': 'min-height: 50px;', }),
+        widget=forms.Select(
+            attrs={'placeholder': _('Статус'),
+                   'style': 'min-height: 50px; width: 800px;', }),
         queryset=Statuses.objects.all())
     executor = forms.ModelChoiceField(
         label=_('Исполнитель'),
-        required=True,
-        widget=forms.Select(attrs={'placeholder': _('Исполнитель'),
-                                   'style': 'min-height: 50px;', }),
+        required=False,
+        widget=forms.Select(
+            attrs={'placeholder': _('Исполнитель'),
+                   'style': 'min-height: 50px; width: 800px;', }),
         queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
+    labels = forms.ModelMultipleChoiceField(
+        label=_('Метки'),
+        required=False,
+        widget=forms.SelectMultiple(
+            attrs={'placeholder': _('Метки'),
+                   'style': 'min-height: 50px; width: 800px;', }),
+        queryset=Labels.objects.all())
 
     class Meta:
         model = Tasks
-        fields = ('name', 'description', 'status', 'executor')
-        labels = {'name': _('Имя'),
-                  'description': _('Описание'),
-                  'status': _('Статус'),
-                  'executor': _('Исполнитель'), }
+        fields = ('name', 'description', 'status', 'executor', 'labels')
 
 
 class TaskUpdateForm(TaskCreationForm):
+    pass
+
+
+class LabelCreationForm(ModelForm):
+    name = forms.CharField(label=_('Имя'),
+                           required=True,
+                           widget=forms.TextInput(
+                               attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control',
+                                      'style': 'max-width: 24em', }))
+
+    class Meta:
+        model = Labels
+        fields = ('name',)
+        labels = {'name': _('Имя'), }
+
+
+class LabelUpdateForm(LabelCreationForm):
     pass

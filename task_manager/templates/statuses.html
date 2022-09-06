@@ -27,6 +27,9 @@
                         <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
                     </li>
                     <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'labels' %}>{% translate "Метки"%}</a>
+                    </li>
+                    <li class="navbar-brand">
                         <a class="nav-link" href={% url 'tasks' %}>{% translate "Задачи"%}</a>
                     </li>
                 </ul>
@@ -47,7 +50,7 @@
         
             <br>
             
-            <a class="nav-link" href={% url 'status_create' %}>Создать статус</a>
+            <a class="nav-link" href={% url 'status_create' %}>{% translate "Создать статус"%}</a>
 
             <table class="table table-striped table-dark">
                 <thead>

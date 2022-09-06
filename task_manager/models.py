@@ -22,8 +22,20 @@ class Tasks(models.Model):
     author = models.ForeignKey(
         HexletUser, on_delete=models.PROTECT, related_name='author', null=True)
     executor = models.ForeignKey(
-        HexletUser, on_delete=models.PROTECT, related_name='executor')
+        HexletUser,
+        on_delete=models.PROTECT,
+        related_name='executor',
+        null=True)
     created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+
+class Labels(models.Model):
+    name = models.TextField(unique=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    task = models.ManyToManyField(Tasks, related_name='labels')
 
     def __str__(self):
         return self.name

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from task_manager.models import HexletUser, Statuses, Tasks
+from task_manager.models import HexletUser, Statuses, Tasks, Labels
 from task_manager.forms import UserRegistrationForm
 from django.test import Client
 
@@ -233,3 +233,69 @@ class UserTest(TestCase):
         assert HexletUser.objects.get(id=user2_id).username == "bobgreen"
         c.post(f'/statuses/{status.id}/delete/')
         assert Statuses.objects.get(id=status_id).name == "status1"
+
+    def test_create_label(self):
+        c = Client()
+        user1 = HexletUser.objects.create(first_name="John",
+                                          last_name="Black",
+                                          username="johnblack",
+                                          password='*aaaccc3')
+        c.force_login(user1)
+        label_data = {'name': "label1"}
+        c.post('/labels/create/', label_data)
+        assert Labels.objects.get(id=1).name == "label1"
+
+    def test_update_label(self):
+        c = Client()
+        user1 = HexletUser.objects.create(first_name="John",
+                                          last_name="Black",
+                                          username="johnblack",
+                                          password='*aaaccc3')
+        c.force_login(user1)
+        label1 = Labels.objects.create(name="label1")
+        Labels.objects.create(name="label2")
+        new_data_invalid = {'name': "label2"}
+        c.post(f'/labels/{label1.id}/update/', new_data_invalid)
+        assert Labels.objects.get(id=label1.id).name == "label1"
+        new_data_valid = {'name': "label3"}
+        c.post(f'/labels/{label1.id}/update/', new_data_valid)
+        assert Labels.objects.get(id=label1.id).name == "label3"
+
+    def test_delete_label(self):
+        c = Client()
+        user1 = HexletUser.objects.create(first_name="John",
+                                          last_name="Black",
+                                          username="johnblack",
+                                          password='*aaaccc3')
+        label1 = Labels.objects.create(name="label1")
+        c.force_login(user1)
+        c.post(f'/labels/{label1.id}/delete/')
+        labels = []
+        for label in Labels.objects.all():
+            labels.append(label)
+        assert not labels
+
+    def test_delete_label_with_task(self):
+        c = Client()
+        user1 = HexletUser.objects.create(first_name="John",
+                                          last_name="Black",
+                                          username="johnblack",
+                                          password='*aaaccc3')
+        user2 = HexletUser.objects.create(first_name="Bob",
+                                          last_name="Green",
+                                          username="bobgreen",
+                                          password='*aaaccc5')
+        status = Statuses.objects.create(name="status1")
+        label1 = Labels.objects.create(name="label1")
+        label1_id = label1.id
+        label2 = Labels.objects.create(name="label2")
+        task = Tasks.objects.create(name="task",
+                                    description='some_description',
+                                    status=status,
+                                    author=user1,
+                                    executor=user2)
+        task.labels.add(label1)
+        task.labels.add(label2)
+        c.force_login(user1)
+        c.post(f'/labels/{label1.id}/delete/')
+        assert Labels.objects.get(id=label1_id).name == "label1"

@@ -28,6 +28,9 @@
                         <a class="nav-link" href={% url 'statuses' %}>{% translate "Статусы"%}</a>
                     </li>
                     <li class="navbar-brand">
+                        <a class="nav-link" href={% url 'labels' %}>{% translate "Метки"%}</a>
+                    </li>
+                    <li class="navbar-brand">
                         <a class="nav-link" href={% url 'tasks' %}>{% translate "Задачи"%}</a>
                     </li>
                 </ul>
@@ -73,6 +76,14 @@
                             <div class="col">{% translate "Дата создания"%}</div>
                             <div class="col">{{ task.created_at }}</div>
                         </div>
+                        <div class="row">
+                            <div class="col">{% translate "Метки"%}</div>
+                        </div>
+                        <ul>
+                            {% for label in labels %}
+                            <li>{{ label.name }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                     <br>
                     <br>
