@@ -316,8 +316,8 @@ class TaskDescriptionView(generic.TemplateView):
             return redirect('login')
         task = Tasks.objects.get(id=kwargs['pk'])
         return render(request, self.template_name, {
-                         'task': task,
-                         'labels': task.labels.all()})
+                          'task': task,
+                          'labels': task.labels.all()})
 
 
 class LabelsView(ListView):
