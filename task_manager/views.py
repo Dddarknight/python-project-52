@@ -315,9 +315,9 @@ class TaskDescriptionView(generic.TemplateView):
                 request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
             return redirect('login')
         task = Tasks.objects.get(id=kwargs['pk'])
-        return render(request, self.template_name, {
-                          'task': task,
-                          'labels': task.labels.all()})
+        return render(
+            request, self.template_name, {'task': task,
+                                          'labels': task.labels.all()})
 
 
 class LabelsView(ListView):
