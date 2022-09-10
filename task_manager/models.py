@@ -15,7 +15,6 @@ class Statuses(models.Model):
         return self.name
 
 
-
 class Labels(models.Model):
     name = models.TextField(unique=True)
     created_at = models.DateTimeField(default=timezone.now)

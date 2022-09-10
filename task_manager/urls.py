@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from task_manager import views
-from django_filters.views import FilterView
 from task_manager.models import Tasks
 
 
