@@ -14,6 +14,8 @@ IS_HEROKU = "DYNO" in os.environ
 
 if not IS_HEROKU:
     DEBUG = True
+else:
+    DEBUG = False
 
 if IS_HEROKU:
     ALLOWED_HOSTS = ['webserver', "*"]
@@ -45,7 +47,7 @@ MIDDLEWARE = [
 ]
 
 ROLLBAR = {
-    'access_token': '33e70113278942cfba0e8ac3307de4b5',
+    'access_token': ROLLBAR_ACCESS_TOKEN,
     'environment': 'development' if DEBUG else 'production',
     'root': BASE_DIR,
 }
