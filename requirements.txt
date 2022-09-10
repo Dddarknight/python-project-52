@@ -4,7 +4,9 @@ backports.zoneinfo==0.2.1; python_version < "3.9" and python_version >= "3.8"
 beautifulsoup4==4.11.1; python_full_version >= "3.6.0" and python_version >= "3.7" \
     --hash=sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30 \
     --hash=sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693
-certifi==2022.6.15.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
+certifi==2022.6.15.1; python_version >= "3.6" and python_full_version < "3.0.0" \
+    or python_full_version >= "3.6.0" and python_version >= "3.6" \
+    --hash=sha256:43dadad18a7f168740e66944e4fa82c6611848ff9056ad910f8f7a3e46ab89e0
 charset-normalizer==2.0.12; python_full_version >= "3.6.0" and python_version >= "3.6" \
     --hash=sha256:2857e29ff0d34db842cd7ca3230549d1a697f96ee6d3fb071cfa6c7393832597 \
     --hash=sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df
