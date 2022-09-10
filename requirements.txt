@@ -29,7 +29,9 @@ idna==3.3; python_version >= "3.6" and python_full_version < "3.0.0" or python_f
     --hash=sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d
 psycopg2==2.9.3; python_version >= "3.6" \
     --hash=sha256:8e841d1bf3434da985cc5ef13e6f75c8981ced601fd70cc6bf33351b91562981
-requests==2.27.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
+requests==2.27.1; python_version >= "3.6" and python_full_version < "3.0.0" \
+    or python_full_version >= "3.6.0" and python_version >= "3.6" \
+    --hash=sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d
 rollbar==0.16.3
 six==1.16.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254 \
