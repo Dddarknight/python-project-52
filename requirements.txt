@@ -43,6 +43,6 @@ soupsieve==2.3.2.post1; python_full_version >= "3.6.0" and python_version >= "3.
 sqlparse==0.4.2; python_version >= "3.8" \
     --hash=sha256:48719e356bb8b42991bdbb1e8b83223757b93789c00910a616a071910ca4a64d
 tzdata==2022.2; sys_platform == "win32" and python_version >= "3.8"
-urllib3==1.22; python_version >= "3.6" and python_full_version < "3.0.0" \
-    or python_full_version >= "3.6.0" and python_version >= "3.6" \
+urllib3==1.26; python_version >= "3.8" and python_full_version < "3.0.0" \
+    or python_full_version >= "3.6.0" and python_version >= "3.8" \
     --hash=sha256:06330f386d6e4b195fbfc736b297f58c5a892e4440e54d294d7004e3a9bbea1b
