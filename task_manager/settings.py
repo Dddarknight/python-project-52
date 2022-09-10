@@ -2,23 +2,23 @@ from pathlib import Path
 import dj_database_url
 import os
 from django.utils.translation import gettext_lazy as _
+import rollbar
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.environ.get('SECRET_KEY')
+ROLLBAR_ACCESS_TOKEN = os.environ.get('ROLLBAR_ACCESS_TOKEN')
 
 IS_HEROKU = "DYNO" in os.environ
 
 if not IS_HEROKU:
     DEBUG = True
 
-
 if IS_HEROKU:
     ALLOWED_HOSTS = ['webserver', "*"]
 else:
     ALLOWED_HOSTS = ['webserver', '127.0.0.1']
-
-SECRET_KEY = os.environ.get('SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,7 +41,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
+
+ROLLBAR = {
+    'access_token': '33e70113278942cfba0e8ac3307de4b5',
+    'environment': 'development' if DEBUG else 'production',
+    'root': BASE_DIR,
+}
+rollbar.init(**ROLLBAR)
 
 ROOT_URLCONF = 'task_manager.urls'
 
@@ -75,22 +83,10 @@ AUTH_USER_MODEL = 'task_manager.HexletUser'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.'
-                'UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.'
                 'MinimumLengthValidator',
         'OPTIONS': {
             'min_length': 3,
         }
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.'
-                'CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.'
-                'NumericPasswordValidator',
     },
 ]
 
