@@ -294,8 +294,92 @@ class UserTest(TestCase):
                                     status=status,
                                     author=user1,
                                     executor=user2)
-        task.labels.add(label1)
-        task.labels.add(label2)
+        task.label.add(label1)
+        task.label.add(label2)
         c.force_login(user1)
         c.post(f'/labels/{label1.id}/delete/')
         assert Labels.objects.get(id=label1_id).name == "label1"
+
+    def test_filter(self):
+        c = Client()
+        user1 = HexletUser.objects.create(first_name="John",
+                                          last_name="Black",
+                                          username="johnblack",
+                                          password='*aaaccc3')
+        user2 = HexletUser.objects.create(first_name="Bob",
+                                          last_name="Green",
+                                          username="bobgreen",
+                                          password='*aaaccc5')
+        status1 = Statuses.objects.create(name="status1")
+        status2 = Statuses.objects.create(name="status2")
+        label1 = Labels.objects.create(name="label1")
+        label2 = Labels.objects.create(name="label2")
+        label3 = Labels.objects.create(name="label3")
+        task1 = Tasks.objects.create(name="task1",
+                                     description='some_description',
+                                     status=status1,
+                                     author=user1,
+                                     executor=user2)
+        task1.label.add(label1)
+        task1.label.add(label2)
+        task2 = Tasks.objects.create(name="task2",
+                                     description='some_description',
+                                     status=status2,
+                                     author=user2,
+                                     executor=user1)
+        task2.label.add(label3)
+        task3 = Tasks.objects.create(name="task3",
+                                     description='some_description',
+                                     status=status2,
+                                     author=user1,
+                                     executor=user2)
+        task3.label.add(label1)
+        c.force_login(user1)
+        data1 = {'status': status1.id,
+                 'executor': '',
+                 'label': '',
+                 'only_executor': ''}
+        response = c.get('/tasks/', data1)
+        self.assertContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertNotContains(response, 'task3')
+        data2 = {'status': status2.id,
+                 'executor': user1.id,
+                 'label': '',
+                 'only_executor': ''}
+        response = c.get('/tasks/', data2)
+        self.assertNotContains(response, 'task1')
+        self.assertContains(response, 'task2')
+        self.assertNotContains(response, 'task3')
+        data3 = {'status': '',
+                 'executor': '',
+                 'label': '',
+                 'only_executor': True}
+        response = c.get('/tasks/', data3)
+        self.assertNotContains(response, 'task1')
+        self.assertContains(response, 'task2')
+        self.assertNotContains(response, 'task3')
+        data4 = {'status': status1.id,
+                 'executor': '',
+                 'label': '',
+                 'only_executor': True}
+        response = c.get('/tasks/', data4)
+        self.assertNotContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertNotContains(response, 'task3')
+        data5 = {'status': '',
+                 'executor': '',
+                 'label': label1.id,
+                 'only_executor': ''}
+        response = c.get('/tasks/', data5)
+        self.assertContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')
+        data6 = {'status': status2.id,
+                 'executor': '',
+                 'label': label1.id,
+                 'only_executor': ''}
+        response = c.get('/tasks/', data6)
+        self.assertNotContains(response, 'task1')
+        self.assertNotContains(response, 'task2')
+        self.assertContains(response, 'task3')

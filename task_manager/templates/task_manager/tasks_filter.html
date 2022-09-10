@@ -57,8 +57,28 @@
                 <div class="card-body mx-auto">
                     <form method="get" class="form-inline">
                     {% csrf_token %}
-                       {{ filter.form.as_p }}
-                    <input type="submit" value={% translate "Показать"%}>
+                    {% for field in filter.form %}
+                        {% if field.label == "Только свои задачи" %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {{ field }}
+                            &nbsp;
+                            &nbsp;
+                            <div class="form-group">{% translate field.label %}</div>
+                            &nbsp;
+                            &nbsp;
+                        {% else %}
+                            <div class="form-group">{% translate field.label %}</div>
+                            &nbsp;
+                            &nbsp;
+                            {{ field }}
+                            &nbsp;
+                            &nbsp;
+                        {% endif %}
+                    {% endfor %}
+                       &nbsp;
+                       &nbsp;
+                       <input type="submit" value={% translate "Показать"%}>
                 </form>
                 </div>
                 </div>
@@ -77,7 +97,7 @@
                     <tbody>
                         
                             <tr>
-                            {% for task in filter.qs %}
+                            {% for task in object_list %}
                                 <td> {{ task.id }} </td>
                                 <td> <a href="/tasks/{{ task.id }}/"> {{ task.name }} </a></td>
                                 <td> {{ task.status }} </td>

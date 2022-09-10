@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from task_manager import views
+from django_filters.views import FilterView
+from task_manager.models import Tasks
 
 
 urlpatterns = [
@@ -27,7 +29,9 @@ urlpatterns = [
     path('statuses/<int:pk>/delete/',
          views.DeleteStatusView.as_view(),
          name='status_delete'),
-    path('tasks/', views.TasksView.as_view(), name='tasks'),
+    path('tasks/', views.TasksView.as_view(
+         model=Tasks),
+         name='tasks'),
     path('tasks/create/',
          views.TaskCreationFormView.as_view(),
          name='task_create'),

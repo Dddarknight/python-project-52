@@ -213,7 +213,7 @@ msgstr "Logout"
 #: task_manager/templates/status_delete.html:58
 #: task_manager/templates/task_delete.html:58
 msgid "Вы уверены, что хотите удалить "
-msgstr "Are you sure you want to delete"
+msgstr "Are you sure you want to delete "
 
 #: task_manager/templates/delete.html:56
 #: task_manager/templates/label_delete.html:58

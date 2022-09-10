@@ -12,7 +12,6 @@ django-bootstrap4==22.2; python_version >= "3.7" \
     --hash=sha256:ad00ff90e6bd002155516b32047c40df15f533fac49da66d8882995adcb13552
 django-debug-toolbar==3.6.0; python_version >= "3.7" \
     --hash=sha256:fe7fe3f21865218827e2162ecc06eba386dfe8cffe4f3501c49bb4359e06a0e6
-django-filter==22.1; python_version >= "3.7"
 django==4.1; python_version >= "3.8" \
     --hash=sha256:031ccb717782f6af83a0063a1957686e87cb4581ea61b47b3e9addf60687989a
 gunicorn==20.1.0; python_version >= "3.5" \

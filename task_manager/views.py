@@ -6,6 +6,7 @@ from task_manager.forms import HexletUserChangeForm
 from task_manager.forms import StatusCreationForm, StatusUpdateForm
 from task_manager.forms import TaskCreationForm, TaskUpdateForm
 from task_manager.forms import LabelCreationForm, LabelUpdateForm
+from task_manager.forms import TaskFilter
 from task_manager.models import HexletUser, Statuses, Tasks, Labels
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
@@ -13,6 +14,14 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.contrib.auth import logout
+from django_filters.views import FilterView
+
+
+def check_authentication(request):
+    if not request.user.is_authenticated:
+        messages.error(
+            request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
+        return redirect('login')
 
 
 class IndexView(generic.TemplateView):
@@ -83,11 +92,8 @@ class UpdateView(FormView):
             return redirect('users')
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
-        if not request.user._get_pk_val() == kwargs['pk']:
+        check_authentication(request)
+        if not request.user.id == kwargs['pk']:
             messages.error(
                 request, _(
                     "У вас нет прав для изменения другого пользователя."))
@@ -115,11 +121,8 @@ class DeleteView(generic.TemplateView):
 
     def get(self, request, **kwargs):
         user = HexletUser.objects.get(id=kwargs['pk'])
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
-        if not request.user._get_pk_val() == kwargs['pk']:
+        check_authentication(request)
+        if not request.user.id == kwargs['pk']:
             messages.error(
                 request, _(
                     "У вас нет прав для изменения другого пользователя."))
@@ -132,10 +135,7 @@ class StatusesView(ListView):
     model = Statuses
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         return render(request, self.template_name, {
             'object_list': self.model.objects.all()})
 
@@ -155,10 +155,7 @@ class StatusCreationFormView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -181,10 +178,7 @@ class UpdateStatusView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -205,25 +199,15 @@ class DeleteStatusView(generic.TemplateView):
 
     def get(self, request, **kwargs):
         status = Statuses.objects.get(id=kwargs['pk'])
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
 
         return render(request, self.template_name, {'status': status})
 
 
-class TasksView(ListView):
-    template_name = 'tasks.html'
+class TasksView(FilterView):
+    template_name = 'task_manager/tasks_filter.html'
     model = Tasks
-
-    def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
-        return render(request, self.template_name, {
-            'object_list': self.model.objects.all()})
+    filterset_class = TaskFilter
 
 
 class TaskCreationFormView(FormView):
@@ -237,7 +221,7 @@ class TaskCreationFormView(FormView):
             task = form.save(commit=False)
             task.author = HexletUser.objects.get(id=request.user.id)
             task.save()
-            task.labels.set(request.POST.getlist('labels'))
+            task.label.set(request.POST.getlist('label'))
             form.save_m2m()
             messages.success(request, _("Задача успешно создана"))
             return redirect('tasks')
@@ -245,10 +229,7 @@ class TaskCreationFormView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -271,10 +252,7 @@ class UpdateTaskView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -293,10 +271,7 @@ class DeleteTaskView(generic.TemplateView):
         return redirect('tasks')
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         task = Tasks.objects.get(id=kwargs['pk'])
         author = task.author
         if request.user.id != author.id:
@@ -310,14 +285,11 @@ class TaskDescriptionView(generic.TemplateView):
     template_name = 'task_description.html'
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         task = Tasks.objects.get(id=kwargs['pk'])
         return render(
             request, self.template_name, {'task': task,
-                                          'labels': task.labels.all()})
+                                          'label': task.label.all()})
 
 
 class LabelsView(ListView):
@@ -325,10 +297,7 @@ class LabelsView(ListView):
     model = Labels
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         return render(request, self.template_name, {
             'object_list': self.model.objects.all()})
 
@@ -348,10 +317,7 @@ class LabelCreationFormView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -374,10 +340,7 @@ class UpdateLabelView(FormView):
             'form': form, 'failed': 'failed'})
 
     def get(self, request, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
 
@@ -388,7 +351,7 @@ class DeleteLabelView(generic.TemplateView):
     def post(self, request, **kwargs):
         label = Labels.objects.get(id=kwargs['pk'])
         for task in Tasks.objects.all():
-            if label in task.labels.all():
+            if label in task.label.all():
                 messages.error(
                     request, _("Невозможно удалить метку, "
                                "потому что она используется"))
@@ -399,8 +362,5 @@ class DeleteLabelView(generic.TemplateView):
 
     def get(self, request, **kwargs):
         label = Labels.objects.get(id=kwargs['pk'])
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("Вы не авторизованы! Пожалуйста, выполните вход."))
-            return redirect('login')
+        check_authentication(request)
         return render(request, self.template_name, {'label': label})

@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from task_manager.models import HexletUser, Statuses, Tasks, Labels
 from django.db.models import Q
+import django_filters
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -118,7 +119,7 @@ class TaskCreationForm(ModelForm):
             attrs={'placeholder': _('Исполнитель'),
                    'style': 'min-height: 50px; width: 800px;', }),
         queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
-    labels = forms.ModelMultipleChoiceField(
+    label = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         required=False,
         widget=forms.SelectMultiple(
@@ -128,7 +129,7 @@ class TaskCreationForm(ModelForm):
 
     class Meta:
         model = Tasks
-        fields = ('name', 'description', 'status', 'executor', 'labels')
+        fields = ('name', 'description', 'status', 'executor', 'label')
 
 
 class TaskUpdateForm(TaskCreationForm):
@@ -151,3 +152,29 @@ class LabelCreationForm(ModelForm):
 
 class LabelUpdateForm(LabelCreationForm):
     pass
+
+
+def users_without_superuser(request):
+    return HexletUser.objects.exclude(Q(is_superuser=True))
+
+
+class TaskFilter(django_filters.FilterSet):
+    status = django_filters.ModelChoiceFilter(
+        label=_('Статус'), queryset=Statuses.objects.all())
+    executor = django_filters.ModelChoiceFilter(
+        label=_('Исполнитель'), queryset=users_without_superuser)
+    label = django_filters.ModelChoiceFilter(
+        label=_('Метка'), queryset=Labels.objects.all())
+    only_executor = django_filters.BooleanFilter(field_name='executor',
+                                                 label=_('Только свои задачи'),
+                                                 widget=forms.CheckboxInput,
+                                                 method='filter_executor')
+
+    class Meta:
+        model = Tasks
+        fields = ['status', 'executor', 'label']
+
+    def filter_executor(self, queryset, name, value):
+        if value:
+            return queryset.filter(executor_id=self.request.user.id)
+        return queryset
