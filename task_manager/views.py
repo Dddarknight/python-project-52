@@ -39,8 +39,6 @@ class UserRegistrationFormView(FormView):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        print(form.data)
-        print(form.fields)
         if form.is_valid():
             form.save()
             messages.success(request, _("Вы успешно зарегистрированы!"))
