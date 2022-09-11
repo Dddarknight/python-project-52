@@ -1,8 +1,18 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "Web service which provides the oppotunity for task management, including adding tasks with different pamameters referring to the users of the app, their tracking and filtering."
 authors = ["Dddarknight <9801677@gmail.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+keywords = ["task manager", "django", "json", "yaml", "yml"]
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Programming Language :: Python :: 3",
+  "Framework :: Django :: 4.1",
+  "Topic :: Internet :: WWW/HTTP :: WSGI :: Application"
+]
+repository = "https://github.com/Dddarknight/python-project-52"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -12,14 +22,13 @@ gunicorn = "^20.1.0"
 psycopg2 = "^2.9.3"
 django-bootstrap4 = "^22.2"
 django-debug-toolbar = "^3.6.0"
-coverage = "^6.4.4"
 django-filter = "^22.1"
 rollbar = "^0.16.3"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
 pytest = "^7.1.2"
-pytest-cov = "^3.0.0"
+coverage = "^6.4.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

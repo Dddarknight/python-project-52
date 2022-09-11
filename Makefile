@@ -9,6 +9,9 @@ test-coverage:
 	poetry run coverage report
 	poetry run coverage xml
 
+run:
+	poetry run python manage.py runserver
+
 build:
 	poetry build
 
