@@ -79,8 +79,6 @@ class HexletLoginForm(AuthenticationForm):
     class Meta:
         model = HexletUser
         fields = ['username', 'password']
-        labels = {'username': _('Имя пользователя'),
-                  'password': _('Пароль'), }
 
 
 class HexletUserChangeForm(UserRegistrationForm):
