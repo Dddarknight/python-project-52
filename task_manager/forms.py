@@ -68,6 +68,7 @@ class HexletLoginForm(AuthenticationForm):
                                widget=forms.TextInput(
                                    attrs={'placeholder': _('Имя пользователя'),
                                           'class': 'form-control',
+                                          'autofocus': True,
                                           'style': 'max-width: 24em', }))
     password = forms.CharField(label=_('Пароль'),
                                required=True,
