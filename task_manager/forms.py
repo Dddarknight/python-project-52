@@ -62,6 +62,19 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class HexletLoginForm(AuthenticationForm):
+    username = forms.CharField(label=_('Имя пользователя'),
+                               max_length=150,
+                               required=True,
+                               widget=forms.TextInput(
+                                   attrs={'placeholder': _('Имя пользователя'),
+                                          'class': 'form-control',
+                                          'style': 'max-width: 24em', }))
+    password = forms.CharField(label=_('Пароль'),
+                               required=True,
+                               widget=forms.PasswordInput(
+                                    attrs={'placeholder': _('Пароль'),
+                                           'class': 'form-control',
+                                           'style': 'max-width: 24em', }))
 
     class Meta:
         model = HexletUser
