@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% translate "Изменение задачи"%}</title>
+    <title>{% translate "Менеджер задач Hexlet"%}</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div>
@@ -57,7 +57,7 @@
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
-                    {{ field.label }}
+                    {{ field.label_tag }}
                     <br>
                     {{ field }}
                     {% if failed and field.label == "Имя" %}
