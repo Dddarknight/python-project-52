@@ -39,9 +39,13 @@ class UserRegistrationFormView(FormView):
 
     def post(self, request):
         form = self.form_class(request.POST)
+        username = request.POST['username']
+        if username in list(
+            HexletUser.objects.values_list('username', flat=True)):
+            return render(request, self.template_name, {'form': form, 'failed': 'failed'})
         if form.is_valid():
             form.save()
-            messages.success(request, _("Вы успешно зарегистрированы!"))
+            messages.success(request, _("Пользователь успешно зарегистрирован"))
             return redirect('login')
         messages.error(request, _("При регистрации произошла ошибка"))
         return render(request, self.template_name, {'form': form})
@@ -64,6 +68,23 @@ class UsersView(ListView):
 class HexletLoginView(LoginView):
     template_name = 'login.html'
     form_class = HexletLoginForm
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, _("Вы залогинены"))
+            return redirect('/')
+        messages.error(request, _("Пожалуйста, введите правильные имя"
+                                  " пользователя и пароль. Оба поля "
+                                  "могут быть чувствительны к регистру."))
+        return render(request, self.template_name, {'form': form})
+
+    def get(self, request):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
 
 
 class HexletLogoutView(generic.TemplateView):
