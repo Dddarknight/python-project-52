@@ -9,17 +9,20 @@ import django_filters
 
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(label=_('Имя'),
+                                 label_suffix='',
                                  required=True,
                                  widget=forms.TextInput(
                                      attrs={'placeholder': _('Имя'),
                                             'class': 'form-control', }))
     last_name = forms.CharField(label=_('Фамилия'),
+                                label_suffix='',
                                 required=True,
                                 widget=forms.TextInput(
                                     attrs={'placeholder': _('Фамилия'),
                                            'class': 'form-control', }))
     username = forms.CharField(label=_('Имя пользователя'),
                                max_length=150,
+                               label_suffix='',
                                required=True,
                                help_text=_('Обязательное поле. '
                                            'Не более 150 символов. '
@@ -27,8 +30,10 @@ class UserRegistrationForm(UserCreationForm):
                                            'символы @/./+/-/_.'),
                                widget=forms.TextInput(
                                    attrs={'placeholder': _('Имя пользователя'),
+                                          'autofocus': True,
                                           'class': 'form-control', }))
     password1 = forms.CharField(label=_('Пароль'),
+                                label_suffix='',
                                 required=True,
                                 help_text=_(
                                     "Ваш пароль должен содержать "
@@ -39,6 +44,7 @@ class UserRegistrationForm(UserCreationForm):
                                            'data-toggle': 'password',
                                            'id': 'password', }))
     password2 = forms.CharField(label=_('Подтверждение пароля'),
+                                label_suffix='',
                                 required=True,
                                 help_text=_("Для подтверждения введите,"
                                             " пожалуйста, пароль ещё раз."),
@@ -54,11 +60,6 @@ class UserRegistrationForm(UserCreationForm):
         model = HexletUser
         fields = (
             'first_name', 'last_name', 'username', 'password1', 'password2')
-        labels = {'first_name': _('Имя'),
-                  'last_name': _('Фамилия'),
-                  'username': _('Имя пользователя'),
-                  'password1': _('Пароль'),
-                  'password2': _('Подтверждение пароля')}
 
 
 class HexletLoginForm(AuthenticationForm):
@@ -90,6 +91,7 @@ class HexletUserChangeForm(UserRegistrationForm):
 
 class StatusCreationForm(ModelForm):
     name = forms.CharField(label=_('Имя'),
+                           label_suffix='',
                            required=True,
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
@@ -99,7 +101,6 @@ class StatusCreationForm(ModelForm):
     class Meta:
         model = Statuses
         fields = ('name',)
-        labels = {'name': _('Имя'), }
 
 
 class StatusUpdateForm(StatusCreationForm):
@@ -109,18 +110,21 @@ class StatusUpdateForm(StatusCreationForm):
 class TaskCreationForm(ModelForm):
     name = forms.CharField(
         label=_('Имя'),
+        label_suffix='',
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
                                       'style': 'width: 800px;', }))
     description = forms.CharField(
         label=_('Описание'),
+        label_suffix='',
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Описание'),
                                       'class': 'form-control',
                                       'style': 'width: 800px;', }))
     status = forms.ModelChoiceField(
         label=_('Статус'),
+        label_suffix='',
         required=True,
         widget=forms.Select(
             attrs={'placeholder': _('Статус'),
@@ -128,6 +132,7 @@ class TaskCreationForm(ModelForm):
         queryset=Statuses.objects.all())
     executor = forms.ModelChoiceField(
         label=_('Исполнитель'),
+        label_suffix='',
         required=False,
         widget=forms.Select(
             attrs={'placeholder': _('Исполнитель'),
@@ -135,6 +140,7 @@ class TaskCreationForm(ModelForm):
         queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
     label = forms.ModelMultipleChoiceField(
         label=_('Метки'),
+        label_suffix='',
         required=False,
         widget=forms.SelectMultiple(
             attrs={'placeholder': _('Метки'),
@@ -152,6 +158,7 @@ class TaskUpdateForm(TaskCreationForm):
 
 class LabelCreationForm(ModelForm):
     name = forms.CharField(label=_('Имя'),
+                           label_suffix='',
                            required=True,
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
@@ -161,7 +168,6 @@ class LabelCreationForm(ModelForm):
     class Meta:
         model = Labels
         fields = ('name',)
-        labels = {'name': _('Имя'), }
 
 
 class LabelUpdateForm(LabelCreationForm):
@@ -174,13 +180,14 @@ def users_without_superuser(request):
 
 class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
-        label=_('Статус'), queryset=Statuses.objects.all())
+        label=_('Статус'), label_suffix='', queryset=Statuses.objects.all())
     executor = django_filters.ModelChoiceFilter(
-        label=_('Исполнитель'), queryset=users_without_superuser)
+        label=_('Исполнитель'), label_suffix='', queryset=users_without_superuser)
     label = django_filters.ModelChoiceFilter(
-        label=_('Метка'), queryset=Labels.objects.all())
+        label=_('Метка'), label_suffix='', queryset=Labels.objects.all())
     only_executor = django_filters.BooleanFilter(field_name='executor',
                                                  label=_('Только свои задачи'),
+                                                 label_suffix='',
                                                  widget=forms.CheckboxInput,
                                                  method='filter_executor')
 

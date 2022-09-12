@@ -46,7 +46,7 @@
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
-                    {{ field.label }}
+                    {{ field.label_tag }}
                     {{ field }}
                     {% if failed and field.label == "Имя пользователя" %}
                         <small class="text-danger">{% translate "Пользователь с таким именем уже существует."%}</small>
@@ -57,7 +57,7 @@
                         {% endif %}
                     {% endif %}
                 {% endfor %}
-                <button type="submit" class="btn btn-info"> {% translate "Зарегистрировать"%} </button>
+                <input type="submit" class="btn btn-info" value='{% translate "Зарегистрировать"%}'>
             </form>
         {% endblock content %}
     </div>
