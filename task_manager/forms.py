@@ -103,7 +103,7 @@ class StatusUpdateForm(StatusCreationForm):
     name = forms.CharField(label=_('Имя'),
                            label_suffix='',
                            required=True,
-                           initial = '',
+                           initial='',
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
@@ -163,7 +163,7 @@ class TaskUpdateForm(TaskCreationForm):
     name = forms.CharField(
         label=_('Имя'),
         label_suffix='',
-        initial = '',
+        initial='',
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
@@ -171,7 +171,7 @@ class TaskUpdateForm(TaskCreationForm):
     description = forms.CharField(
         label=_('Описание'),
         label_suffix='',
-        initial = '',
+        initial='',
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Описание'),
                                       'class': 'form-control',
@@ -179,7 +179,7 @@ class TaskUpdateForm(TaskCreationForm):
     status = forms.ModelChoiceField(
         label=_('Статус'),
         label_suffix='',
-        initial = '',
+        initial='',
         required=True,
         widget=forms.Select(
             attrs={'placeholder': _('Статус'),
@@ -188,7 +188,7 @@ class TaskUpdateForm(TaskCreationForm):
     executor = forms.ModelChoiceField(
         label=_('Исполнитель'),
         label_suffix='',
-        initial = '',
+        initial='',
         required=False,
         widget=forms.Select(
             attrs={'placeholder': _('Исполнитель'),
@@ -197,7 +197,7 @@ class TaskUpdateForm(TaskCreationForm):
     label = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         label_suffix='',
-        initial = '',
+        initial='',
         required=False,
         widget=forms.SelectMultiple(
             attrs={'placeholder': _('Метки'),
@@ -246,7 +246,9 @@ class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
         label=_('Статус'), label_suffix='', queryset=Statuses.objects.all())
     executor = django_filters.ModelChoiceFilter(
-        label=_('Исполнитель'), label_suffix='', queryset=users_without_superuser)
+        label=_('Исполнитель'),
+        label_suffix='',
+        queryset=users_without_superuser)
     label = django_filters.ModelChoiceFilter(
         label=_('Метка'), label_suffix='', queryset=Labels.objects.all())
     only_executor = django_filters.BooleanFilter(field_name='executor',

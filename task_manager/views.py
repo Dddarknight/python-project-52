@@ -41,11 +41,15 @@ class UserRegistrationFormView(FormView):
         form = self.form_class(request.POST)
         username = request.POST['username']
         if username in list(
-            HexletUser.objects.values_list('username', flat=True)):
-            return render(request, self.template_name, {'form': form, 'failed': 'failed'})
+                HexletUser.objects.values_list('username', flat=True)):
+            return render(
+                request,
+                self.template_name,
+                {'form': form, 'failed': 'failed'})
         if form.is_valid():
             form.save()
-            messages.success(request, _("Пользователь успешно зарегистрирован"))
+            messages.success(
+                request, _("Пользователь успешно зарегистрирован"))
             return redirect('login')
         messages.error(request, _("При регистрации произошла ошибка"))
         return render(request, self.template_name, {'form': form})
@@ -80,7 +84,7 @@ class HexletLoginView(LoginView):
         messages.error(request, _("Пожалуйста, введите правильные имя"
                                   " пользователя и пароль. Оба поля "
                                   "могут быть чувствительны к регистру."))
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name)
 
     def get(self, request):
         form = self.form_class(initial=self.initial)
@@ -201,7 +205,8 @@ class UpdateStatusView(FormView):
     def get(self, request, **kwargs):
         check_authentication(request)
         form = self.form_class(initial=self.initial)
-        form.fields['name'].initial = Statuses.objects.get(id=kwargs['pk']).name
+        form.fields['name'].initial = Statuses.objects.get(
+            id=kwargs['pk']).name
         return render(request, self.template_name, {'form': form})
 
 
@@ -216,7 +221,7 @@ class DeleteStatusView(generic.TemplateView):
                            "потому что он используется"))
             return redirect('statuses')
         status.delete()
-        messages.success(request, _("Пользователь успешно удалён"))
+        messages.success(request, _("Статус успешно удалён"))
         return redirect('statuses')
 
     def get(self, request, **kwargs):
