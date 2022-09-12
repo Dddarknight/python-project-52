@@ -109,7 +109,7 @@ class UpdateView(FormView):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, _("Ваши данные изменены!"))
+            messages.success(request, _("Пользователь успешно изменён"))
             return redirect('users')
 
     def get(self, request, **kwargs):

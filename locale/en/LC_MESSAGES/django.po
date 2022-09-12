@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-12 09:32+0300\n"
+"POT-Creation-Date: 2022-09-12 12:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,28 +18,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: task_manager/forms.py:11 task_manager/forms.py:14 task_manager/forms.py:57
-#: task_manager/forms.py:92 task_manager/forms.py:95 task_manager/forms.py:102
-#: task_manager/forms.py:111 task_manager/forms.py:113
-#: task_manager/forms.py:154 task_manager/forms.py:157
-#: task_manager/forms.py:164 task_manager/templates/labels.html:59
+#: task_manager/forms.py:11 task_manager/forms.py:15 task_manager/forms.py:89
+#: task_manager/forms.py:93 task_manager/forms.py:108 task_manager/forms.py:111
+#: task_manager/forms.py:156 task_manager/forms.py:160
+#: task_manager/templates/labels.html:59
 #: task_manager/templates/statuses.html:59
 #: task_manager/templates/task_manager/tasks_filter.html:90
 #: task_manager/templates/tasks.html:70
 msgid "Имя"
 msgstr "Name"
 
-#: task_manager/forms.py:16 task_manager/forms.py:19 task_manager/forms.py:58
+#: task_manager/forms.py:17 task_manager/forms.py:21
 msgid "Фамилия"
 msgstr "Last name"
 
-#: task_manager/forms.py:21 task_manager/forms.py:29 task_manager/forms.py:59
-#: task_manager/forms.py:65 task_manager/forms.py:70
-#: task_manager/templates/users.html:70
+#: task_manager/forms.py:23 task_manager/forms.py:32 task_manager/forms.py:62
+#: task_manager/forms.py:67 task_manager/templates/users.html:70
 msgid "Имя пользователя"
 msgstr "Username"
 
-#: task_manager/forms.py:24
+#: task_manager/forms.py:27
 msgid ""
 "Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./"
 "+/-/_."
@@ -47,42 +45,42 @@ msgstr ""
 "Required field. No more than 150 characters. Only letters, numbers and "
 "symbols @/./+/-/_."
 
-#: task_manager/forms.py:31 task_manager/forms.py:37 task_manager/forms.py:60
-#: task_manager/forms.py:74 task_manager/forms.py:78
+#: task_manager/forms.py:35 task_manager/forms.py:42 task_manager/forms.py:71
+#: task_manager/forms.py:75
 msgid "Пароль"
 msgstr "Password"
 
-#: task_manager/forms.py:34
+#: task_manager/forms.py:39
 msgid "Ваш пароль должен содержать как минимум 3 символа."
 msgstr "Your password must contain at least 3 characters."
 
-#: task_manager/forms.py:41 task_manager/forms.py:47 task_manager/forms.py:61
+#: task_manager/forms.py:44 task_manager/forms.py:51
 msgid "Подтверждение пароля"
 msgstr "Password confirmation"
 
-#: task_manager/forms.py:43
+#: task_manager/forms.py:47
 msgid "Для подтверждения введите, пожалуйста, пароль ещё раз."
 msgstr "To confirm, please enter your password again."
 
-#: task_manager/forms.py:117 task_manager/forms.py:119
+#: task_manager/forms.py:115 task_manager/forms.py:118
 msgid "Описание"
 msgstr "Description"
 
-#: task_manager/forms.py:123 task_manager/forms.py:126
-#: task_manager/forms.py:177 task_manager/templates/task_description.html:72
+#: task_manager/forms.py:122 task_manager/forms.py:126
+#: task_manager/forms.py:179 task_manager/templates/task_description.html:72
 #: task_manager/templates/task_manager/tasks_filter.html:91
 #: task_manager/templates/tasks.html:71
 msgid "Статус"
 msgstr "Status"
 
-#: task_manager/forms.py:130 task_manager/forms.py:133
-#: task_manager/forms.py:179 task_manager/templates/task_description.html:68
+#: task_manager/forms.py:130 task_manager/forms.py:134
+#: task_manager/forms.py:181 task_manager/templates/task_description.html:68
 #: task_manager/templates/task_manager/tasks_filter.html:93
 #: task_manager/templates/tasks.html:73
 msgid "Исполнитель"
 msgstr "Executor"
 
-#: task_manager/forms.py:137 task_manager/forms.py:140
+#: task_manager/forms.py:138 task_manager/forms.py:142
 #: task_manager/templates/delete.html:31 task_manager/templates/index.html:31
 #: task_manager/templates/label_create.html:31
 #: task_manager/templates/label_delete.html:31
@@ -104,11 +102,11 @@ msgstr "Executor"
 msgid "Метки"
 msgstr "Labels"
 
-#: task_manager/forms.py:181
+#: task_manager/forms.py:183
 msgid "Метка"
 msgstr "Label"
 
-#: task_manager/forms.py:183
+#: task_manager/forms.py:185
 msgid "Только свои задачи"
 msgstr "Only my tasks"
 
@@ -444,8 +442,8 @@ msgid "Вы разлогинены."
 msgstr "You are logged out."
 
 #: task_manager/views.py:112
-msgid "Ваши данные изменены!"
-msgstr "Your data has been changed!"
+msgid "Пользователь успешно изменён"
+msgstr "User updated successfully"
 
 #: task_manager/views.py:120 task_manager/views.py:149
 msgid "У вас нет прав для изменения другого пользователя."
@@ -502,3 +500,6 @@ msgstr "Cannot delete label because it is in use"
 #: task_manager/views.py:381
 msgid "Метка успешно удалена"
 msgstr "Label deleted successfully"
+
+#~ msgid "Ваши данные изменены!"
+#~ msgstr "Your data has been changed!"
