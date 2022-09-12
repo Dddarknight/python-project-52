@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-12 12:55+0300\n"
+"POT-Creation-Date: 2022-09-12 14:54+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: task_manager/forms.py:93 task_manager/forms.py:108 task_manager/forms.py:111
 #: task_manager/forms.py:156 task_manager/forms.py:160
 #: task_manager/templates/labels.html:59
-#: task_manager/templates/statuses.html:59
+#: task_manager/templates/statuses.html:61
 #: task_manager/templates/task_manager/tasks_filter.html:90
 #: task_manager/templates/tasks.html:70
 msgid "Имя"
@@ -171,9 +171,8 @@ msgstr "Users"
 #: task_manager/templates/status_create.html:28
 #: task_manager/templates/status_delete.html:28
 #: task_manager/templates/status_update.html:28
-#: task_manager/templates/statuses.html:15
 #: task_manager/templates/statuses.html:27
-#: task_manager/templates/statuses.html:48
+#: task_manager/templates/statuses.html:50
 #: task_manager/templates/task_create.html:28
 #: task_manager/templates/task_delete.html:28
 #: task_manager/templates/task_description.html:28
@@ -214,7 +213,7 @@ msgstr "Tasks"
 #: task_manager/templates/status_create.html:40
 #: task_manager/templates/status_delete.html:40
 #: task_manager/templates/status_update.html:40
-#: task_manager/templates/statuses.html:38
+#: task_manager/templates/statuses.html:39
 #: task_manager/templates/task_create.html:40
 #: task_manager/templates/task_delete.html:40
 #: task_manager/templates/task_description.html:40
@@ -246,7 +245,7 @@ msgstr " ?"
 msgid "Да, удалить"
 msgstr "Yes, delete"
 
-#: task_manager/templates/index.html:15
+#: task_manager/templates/index.html:15 task_manager/templates/statuses.html:15
 msgid "Менеджер задач Hexlet"
 msgstr "Task manager Hexlet"
 
@@ -307,7 +306,7 @@ msgstr "Update label"
 #: task_manager/templates/label_update.html:68
 #: task_manager/templates/labels.html:70
 #: task_manager/templates/status_update.html:68
-#: task_manager/templates/statuses.html:70
+#: task_manager/templates/statuses.html:72
 #: task_manager/templates/task_description.html:90
 #: task_manager/templates/task_manager/tasks_filter.html:108
 #: task_manager/templates/task_update.html:68
@@ -317,7 +316,7 @@ msgid "Изменить"
 msgstr "Update"
 
 #: task_manager/templates/labels.html:60
-#: task_manager/templates/statuses.html:60
+#: task_manager/templates/statuses.html:62
 #: task_manager/templates/task_description.html:76
 #: task_manager/templates/task_manager/tasks_filter.html:94
 #: task_manager/templates/tasks.html:74 task_manager/templates/users.html:72
@@ -325,7 +324,7 @@ msgid "Дата создания"
 msgstr "Created at"
 
 #: task_manager/templates/labels.html:72
-#: task_manager/templates/statuses.html:72
+#: task_manager/templates/statuses.html:74
 #: task_manager/templates/task_description.html:92
 #: task_manager/templates/task_manager/tasks_filter.html:110
 #: task_manager/templates/tasks.html:90 task_manager/templates/users.html:86
@@ -346,7 +345,7 @@ msgstr "Registrate"
 
 #: task_manager/templates/status_create.html:16
 #: task_manager/templates/status_create.html:51
-#: task_manager/templates/statuses.html:53
+#: task_manager/templates/statuses.html:55
 msgid "Создать статус"
 msgstr "Create status"
 
