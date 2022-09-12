@@ -249,7 +249,7 @@ class TaskCreationFormView(FormView):
             task = form.save(commit=False)
             task.author = HexletUser.objects.get(id=request.user.id)
             task.save()
-            task.label.set(request.POST.getlist('label'))
+            task.labels.set(request.POST.getlist('labels'))
             form.save_m2m()
             messages.success(request, _("Задача успешно создана"))
             return redirect('tasks')
@@ -293,8 +293,8 @@ class UpdateTaskView(FormView):
             id=kwargs['pk']).status.name
         form.fields['executor'].initial = Tasks.objects.get(
             id=kwargs['pk']).executor
-        form.fields['label'].initial = Tasks.objects.get(
-            id=kwargs['pk']).label.all()
+        form.fields['labels'].initial = Tasks.objects.get(
+            id=kwargs['pk']).labels.all()
         return render(request, self.template_name, {'form': form})
 
 
@@ -330,7 +330,7 @@ class TaskDescriptionView(generic.TemplateView):
         task = Tasks.objects.get(id=kwargs['pk'])
         return render(
             request, self.template_name, {'task': task,
-                                          'label': task.label.all()})
+                                          'labels': task.labels.all()})
 
 
 class LabelsView(ListView):

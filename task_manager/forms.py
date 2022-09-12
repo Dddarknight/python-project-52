@@ -150,7 +150,7 @@ class TaskCreationForm(ModelForm):
         widget=forms.Select(
             attrs={'style': 'min-height: 50px; width: 800px;', }),
         queryset=HexletUser.objects.all())
-    label = forms.ModelMultipleChoiceField(
+    labels = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         label_suffix='',
         required=False,
@@ -161,7 +161,7 @@ class TaskCreationForm(ModelForm):
 
     class Meta:
         model = Tasks
-        fields = ('name', 'description', 'status', 'executor', 'label')
+        fields = ('name', 'description', 'status', 'executor', 'labels')
 
 
 class TaskUpdateForm(TaskCreationForm):
@@ -199,7 +199,7 @@ class TaskUpdateForm(TaskCreationForm):
             attrs={'placeholder': _('Исполнитель'),
                    'style': 'min-height: 50px; width: 800px;', }),
         queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
-    label = forms.ModelMultipleChoiceField(
+    labels = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         label_suffix='',
         initial='',
@@ -211,7 +211,7 @@ class TaskUpdateForm(TaskCreationForm):
 
     class Meta:
         model = Tasks
-        fields = ('name', 'description', 'status', 'executor', 'label')
+        fields = ('name', 'description', 'status', 'executor', 'labels')
 
 
 class LabelCreationForm(ModelForm):

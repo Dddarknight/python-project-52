@@ -38,7 +38,7 @@ class Tasks(models.Model):
         related_name='executor',
         null=True)
     created_at = models.DateTimeField(default=timezone.now)
-    label = models.ManyToManyField(Labels, related_name='tasks')
+    labels = models.ManyToManyField(Labels, related_name='tasks')
 
     def __str__(self):
         return self.name
