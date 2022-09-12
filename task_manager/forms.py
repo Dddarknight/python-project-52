@@ -40,9 +40,7 @@ class UserRegistrationForm(UserCreationForm):
                                     "как минимум 3 символа."),
                                 widget=forms.PasswordInput(
                                     attrs={'placeholder': _('Пароль'),
-                                           'class': 'form-control',
-                                           'data-toggle': 'password',
-                                           'id': 'password', }))
+                                           'class': 'form-control', }))
     password2 = forms.CharField(label=_('Подтверждение пароля'),
                                 label_suffix='',
                                 required=True,
@@ -52,9 +50,7 @@ class UserRegistrationForm(UserCreationForm):
                                     attrs={
                                         'placeholder': _('Подтверждение '
                                                          'пароля'),
-                                        'class': 'form-control',
-                                        'data-toggle': 'password',
-                                        'id': 'password', }))
+                                        'class': 'form-control', }))
 
     class Meta:
         model = HexletUser
