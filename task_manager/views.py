@@ -393,7 +393,7 @@ class DeleteLabelView(generic.TemplateView):
     def post(self, request, **kwargs):
         label = Labels.objects.get(id=kwargs['pk'])
         for task in Tasks.objects.all():
-            if label in task.label.all():
+            if label in task.labels.all():
                 messages.error(
                     request, _("Невозможно удалить метку, "
                                "потому что она используется"))

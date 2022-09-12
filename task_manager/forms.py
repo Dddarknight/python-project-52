@@ -250,7 +250,7 @@ class TaskFilter(django_filters.FilterSet):
         label=_('Исполнитель'),
         label_suffix='',
         queryset=users_without_superuser)
-    label = django_filters.ModelChoiceFilter(
+    labels = django_filters.ModelChoiceFilter(
         label=_('Метка'), label_suffix='', queryset=Labels.objects.all())
     only_author = django_filters.BooleanFilter(field_name='author',
                                                label=_('Только свои задачи'),
@@ -260,7 +260,7 @@ class TaskFilter(django_filters.FilterSet):
 
     class Meta:
         model = Tasks
-        fields = ['status', 'executor', 'label']
+        fields = ['status', 'executor', 'labels']
 
     def filter_author(self, queryset, name, value):
         if value:
