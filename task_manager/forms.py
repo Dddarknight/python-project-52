@@ -72,9 +72,9 @@ class HexletLoginForm(AuthenticationForm):
                                label_suffix='',
                                required=True,
                                widget=forms.PasswordInput(
-                                    attrs={'placeholder': _('Пароль'),
-                                           'class': 'form-control',
-                                           'style': 'max-width: 24em', }))
+                                   attrs={'placeholder': _('Пароль'),
+                                          'class': 'form-control',
+                                          'style': 'max-width: 24em', }))
 
     class Meta:
         model = HexletUser
@@ -142,8 +142,7 @@ class TaskCreationForm(ModelForm):
         label_suffix='',
         required=False,
         widget=forms.Select(
-            attrs={'placeholder': _('Исполнитель'),
-                   'style': 'min-height: 50px; width: 800px;', }),
+            attrs={'style': 'min-height: 50px; width: 800px;', }),
         queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
     label = forms.ModelMultipleChoiceField(
         label=_('Метки'),
