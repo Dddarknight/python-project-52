@@ -252,17 +252,17 @@ class TaskFilter(django_filters.FilterSet):
         queryset=users_without_superuser)
     label = django_filters.ModelChoiceFilter(
         label=_('Метка'), label_suffix='', queryset=Labels.objects.all())
-    only_executor = django_filters.BooleanFilter(field_name='executor',
-                                                 label=_('Только свои задачи'),
-                                                 label_suffix='',
-                                                 widget=forms.CheckboxInput,
-                                                 method='filter_executor')
+    only_author = django_filters.BooleanFilter(field_name='author',
+                                               label=_('Только свои задачи'),
+                                               label_suffix='',
+                                               widget=forms.CheckboxInput,
+                                               method='filter_author')
 
     class Meta:
         model = Tasks
         fields = ['status', 'executor', 'label']
 
-    def filter_executor(self, queryset, name, value):
+    def filter_author(self, queryset, name, value):
         if value:
-            return queryset.filter(executor_id=self.request.user.id)
+            return queryset.filter(author_id=self.request.user.id)
         return queryset

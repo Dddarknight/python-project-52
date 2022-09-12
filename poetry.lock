@@ -152,14 +152,6 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
-name = "dotenv"
-version = "0.0.5"
-description = "Handle .env files"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -297,6 +289,17 @@ tomli = ">=1.0.0"
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "python-dotenv"
+version = "0.21.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "requests"
 version = "2.28.1"
 description = "Python HTTP for Humans."
@@ -382,7 +385,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "4819463da045f7204aab57d9cf04fe4a803b82053421c953d18cd5abdfd9312b"
+content-hash = "2c228f210c82369f8f11538e71f178262f0ec1a70a051d6a7c58d3c510c0ee48"
 
 [metadata.files]
 asgiref = []
@@ -404,7 +407,6 @@ django = []
 django-bootstrap4 = []
 django-debug-toolbar = []
 django-filter = []
-dotenv = []
 flake8 = []
 gunicorn = []
 idna = [
@@ -436,6 +438,7 @@ pyparsing = [
     {file = "pyparsing-3.0.9.tar.gz", hash = "sha256:2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"},
 ]
 pytest = []
+python-dotenv = []
 requests = []
 rollbar = []
 six = [
