@@ -201,6 +201,7 @@ class UpdateStatusView(FormView):
     def get(self, request, **kwargs):
         check_authentication(request)
         form = self.form_class(initial=self.initial)
+        form.fields['name'].initial = Statuses.objects.get(id=kwargs['pk']).name
         return render(request, self.template_name, {'form': form})
 
 
@@ -275,6 +276,16 @@ class UpdateTaskView(FormView):
     def get(self, request, **kwargs):
         check_authentication(request)
         form = self.form_class(initial=self.initial)
+        form.fields['name'].initial = Tasks.objects.get(
+            id=kwargs['pk']).name
+        form.fields['description'].initial = Tasks.objects.get(
+            id=kwargs['pk']).description
+        form.fields['status'].initial = Tasks.objects.get(
+            id=kwargs['pk']).status.name
+        form.fields['executor'].initial = Tasks.objects.get(
+            id=kwargs['pk']).executor
+        form.fields['label'].initial = Tasks.objects.get(
+            id=kwargs['pk']).label.all()
         return render(request, self.template_name, {'form': form})
 
 
@@ -363,6 +374,7 @@ class UpdateLabelView(FormView):
     def get(self, request, **kwargs):
         check_authentication(request)
         form = self.form_class(initial=self.initial)
+        form.fields['name'].initial = Labels.objects.get(id=kwargs['pk']).name
         return render(request, self.template_name, {'form': form})
 
 

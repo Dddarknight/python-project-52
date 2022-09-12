@@ -100,7 +100,18 @@ class StatusCreationForm(ModelForm):
 
 
 class StatusUpdateForm(StatusCreationForm):
-    pass
+    name = forms.CharField(label=_('Имя'),
+                           label_suffix='',
+                           required=True,
+                           initial = '',
+                           widget=forms.TextInput(
+                               attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control',
+                                      'style': 'max-width: 24em', }))
+
+    class Meta:
+        model = Statuses
+        fields = ('name',)
 
 
 class TaskCreationForm(ModelForm):
@@ -149,7 +160,53 @@ class TaskCreationForm(ModelForm):
 
 
 class TaskUpdateForm(TaskCreationForm):
-    pass
+    name = forms.CharField(
+        label=_('Имя'),
+        label_suffix='',
+        initial = '',
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control',
+                                      'style': 'width: 800px;', }))
+    description = forms.CharField(
+        label=_('Описание'),
+        label_suffix='',
+        initial = '',
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': _('Описание'),
+                                      'class': 'form-control',
+                                      'style': 'width: 800px;', }))
+    status = forms.ModelChoiceField(
+        label=_('Статус'),
+        label_suffix='',
+        initial = '',
+        required=True,
+        widget=forms.Select(
+            attrs={'placeholder': _('Статус'),
+                   'style': 'min-height: 50px; width: 800px;', }),
+        queryset=Statuses.objects.all())
+    executor = forms.ModelChoiceField(
+        label=_('Исполнитель'),
+        label_suffix='',
+        initial = '',
+        required=False,
+        widget=forms.Select(
+            attrs={'placeholder': _('Исполнитель'),
+                   'style': 'min-height: 50px; width: 800px;', }),
+        queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
+    label = forms.ModelMultipleChoiceField(
+        label=_('Метки'),
+        label_suffix='',
+        initial = '',
+        required=False,
+        widget=forms.SelectMultiple(
+            attrs={'placeholder': _('Метки'),
+                   'style': 'min-height: 50px; width: 800px;', }),
+        queryset=Labels.objects.all())
+
+    class Meta:
+        model = Tasks
+        fields = ('name', 'description', 'status', 'executor', 'label')
 
 
 class LabelCreationForm(ModelForm):
@@ -167,7 +224,18 @@ class LabelCreationForm(ModelForm):
 
 
 class LabelUpdateForm(LabelCreationForm):
-    pass
+    name = forms.CharField(label=_('Имя'),
+                           label_suffix='',
+                           initial='',
+                           required=True,
+                           widget=forms.TextInput(
+                               attrs={'placeholder': _('Имя'),
+                                      'class': 'form-control',
+                                      'style': 'max-width: 24em', }))
+
+    class Meta:
+        model = Labels
+        fields = ('name',)
 
 
 def users_without_superuser(request):
