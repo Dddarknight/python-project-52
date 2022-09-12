@@ -7,6 +7,12 @@ from django.db.models import Q
 import django_filters
 
 
+def users_without_superuser(request):
+    if HexletUser.objects.filter(is_superuser=True):
+        return HexletUser.objects.exclude(Q(is_superuser=True))
+    return HexletUser.objects.all()
+
+
 class UserRegistrationForm(UserCreationForm):
     first_name = forms.CharField(label=_('Имя'),
                                  label_suffix='',
@@ -143,7 +149,7 @@ class TaskCreationForm(ModelForm):
         required=False,
         widget=forms.Select(
             attrs={'style': 'min-height: 50px; width: 800px;', }),
-        queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
+        queryset=HexletUser.objects.all())
     label = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         label_suffix='',
@@ -235,10 +241,6 @@ class LabelUpdateForm(LabelCreationForm):
     class Meta:
         model = Labels
         fields = ('name',)
-
-
-def users_without_superuser(request):
-    return HexletUser.objects.exclude(Q(is_superuser=True))
 
 
 class TaskFilter(django_filters.FilterSet):

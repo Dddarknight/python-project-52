@@ -152,6 +152,14 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
+name = "dotenv"
+version = "0.0.5"
+description = "Handle .env files"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -374,7 +382,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "50b02fb23ba5cfd4610b84675769e5e8b4c5ecd030e802e112047e82a9c28d9a"
+content-hash = "4819463da045f7204aab57d9cf04fe4a803b82053421c953d18cd5abdfd9312b"
 
 [metadata.files]
 asgiref = []
@@ -396,6 +404,7 @@ django = []
 django-bootstrap4 = []
 django-debug-toolbar = []
 django-filter = []
+dotenv = []
 flake8 = []
 gunicorn = []
 idna = [

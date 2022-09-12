@@ -15,6 +15,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib import messages
 from django.contrib.auth import logout
 from django_filters.views import FilterView
+from django.db.models import Q
 
 
 def check_authentication(request):
@@ -258,6 +259,9 @@ class TaskCreationFormView(FormView):
     def get(self, request):
         check_authentication(request)
         form = self.form_class(initial=self.initial)
+        if HexletUser.objects.filter(is_superuser=True):
+            form.fields['executor'].queryset = HexletUser.objects.exclude(
+                Q(is_superuser=True))
         return render(request, self.template_name, {'form': form})
 
 
