@@ -5,6 +5,8 @@ from task_manager import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('login/', views.HexletLoginView.as_view(), name='login'),
+    path('logout/', views.HexletLogoutView.as_view(), name='logout'),
     path('users/', include('task_manager.users.urls')),
     path('statuses/', include('task_manager.statuses.urls')),
     path('tasks/', include('task_manager.tasks.urls')),

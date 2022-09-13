@@ -50,11 +50,11 @@ class TasksTest(TestCase):
         user2 = test_container.create_user2()
         c.force_login(user1)
         status = test_container.create_status1()
-        task_data = {'name': self.test_data['tasks']['task1']['name'],
-                     'description': (
-                        self.test_data['tasks']['task1']['description']),
-                     'status': status.id,
-                     'executor': user2.id}
+        task_data = {
+            'name': self.test_data['tasks']['task1']['name'],
+            'description': (self.test_data['tasks']['task1']['description']),
+            'status': status.id,
+            'executor': user2.id}
         c.post('/tasks/create/', task_data)
         assert Tasks.objects.get(id=1).name == (
             self.test_data['tasks']['task1']['name'])

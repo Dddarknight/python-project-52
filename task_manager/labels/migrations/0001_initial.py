@@ -15,9 +15,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Labels',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID')),
                 ('name', models.TextField(unique=True)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created_at', models.DateTimeField(
+                    default=django.utils.timezone.now)),
             ],
         ),
     ]

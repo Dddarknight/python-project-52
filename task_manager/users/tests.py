@@ -72,12 +72,12 @@ class UserTest(TestCase):
     def test_update_user(self):
         c = Client()
         user = test_container.create_user1()
-        new_data = {'first_name': (
-                        self.test_data['users']['user1']['first_name']),
-                    'last_name': self.test_data['users']['user1']['last_name'],
-                    'username': self.test_data['users']['user2']['username'],
-                    'password1': self.test_data['users']['user1']['password'],
-                    'password2': self.test_data['users']['user1']['password']}
+        new_data = {
+            'first_name': (self.test_data['users']['user1']['first_name']),
+            'last_name': self.test_data['users']['user1']['last_name'],
+            'username': self.test_data['users']['user2']['username'],
+            'password1': self.test_data['users']['user1']['password'],
+            'password2': self.test_data['users']['user1']['password']}
         c.post(f'/users/{user.id}/update/', new_data)
         assert HexletUser.objects.get(id=1).first_name == (
             self.test_data['users']['user1']['first_name'])

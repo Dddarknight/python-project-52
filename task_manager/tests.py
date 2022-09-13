@@ -41,7 +41,7 @@ class TestObjectsCreation(TestCase):
             status=status,
             author=author,
             executor=executor)
-    
+
     def create_task2(self, status, author, executor):
         return Tasks.objects.create(
             name=self.test_data_tasks['tasks']['task2']['name'],
@@ -49,7 +49,7 @@ class TestObjectsCreation(TestCase):
             status=status,
             author=author,
             executor=executor)
-    
+
     def create_task3(self, status, author, executor):
         return Tasks.objects.create(
             name=self.test_data_tasks['tasks']['task3']['name'],
