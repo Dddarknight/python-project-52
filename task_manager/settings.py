@@ -33,6 +33,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "bootstrap4",
     'task_manager',
+    'task_manager.users',
+    'task_manager.statuses',
+    'task_manager.tasks',
+    'task_manager.labels',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +93,7 @@ DATABASES = {
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 
-AUTH_USER_MODEL = 'task_manager.HexletUser'
+AUTH_USER_MODEL = 'users.HexletUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

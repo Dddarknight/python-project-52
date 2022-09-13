@@ -1,0 +1,10 @@
+{
+    "statuses": {
+      "status1": {
+        "name": "status1"
+      },
+      "status2": {
+        "name": "status2"
+      }
+    }
+  }

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+{% block content %}
+    <h1>
+        {% translate "Регистрация"%}
+    </h1>
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label_tag }}
+            {{ field }}
+            {% if failed and field.label == "Имя пользователя" %}
+                <small class="text-danger">{% translate "Пользователь с таким именем уже существует."%}</small>
+                <br>
+            {% else %}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>    
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <input type="submit" class="btn btn-info" value='{% translate "Зарегистрировать"%}'>
+    </form>
+{% endblock content %}

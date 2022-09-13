@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+{% block content %}
+    <h1>
+        {% translate "Просмотр задачи"%}
+    </h1>
+    <br>
+    <div class="card text-white bg-secondary mb-3" style="max-width: 60rem;">
+        <div class="card-header">
+            <h3 class="card-title">{{task.name}}</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-text">{{task.description}}</h5>
+            <hr>
+            <div class="container">
+                <div class="row">
+                    <div class="col">{% translate "Автор"%}</div>
+                    <div class="col">{{ task.author }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">{% translate "Исполнитель"%}</div>
+                    <div class="col">{{ task.executor }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">{% translate "Статус"%}</div>
+                    <div class="col">{{ task.status }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">{% translate "Дата создания"%}</div>
+                    <div class="col">{{ task.created_at }}</div>
+                </div>
+                <div class="row">
+                    <div class="col">{% translate "Метки"%}</div>
+                </div>
+                <ul>
+                    {% for label in labels %}
+                    <li>{{ label.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <br>
+            <br>
+            <a href="/tasks/{{ task.id }}/update/"> {% translate "Изменить"%} </a>
+            <br>
+            <a href="/tasks/{{ task.id }}/delete/"> {% translate "Удалить"%} </a>
+        </div>
+    </div>
+{% endblock content %}

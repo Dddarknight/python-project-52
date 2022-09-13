@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+{% block content %}
+    <h1>
+        {% translate "Пользователи"%}
+    </h1>
+    <br>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">{% translate "Имя пользователя"%}</th>
+                <th scope="col">{% translate "Полное имя"%}</th>
+                <th scope="col">{% translate "Дата создания"%}</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for user in object_list %}
+                {% if user.is_superuser == False %}
+                <tr>
+                    <td> {{ user.id }} </td>
+                    <td> {{ user.username }} </td>
+                    <td> {{ user.first_name }} {{ user.last_name }} </td>
+                    <td> {{ user.date_joined }} </td>
+                    <td>
+                        <a href="/users/{{ user.id }}/update/"> {% translate "Изменить"%} </a>
+                        <br>
+                        <a href="/users/{{ user.id }}/delete/"> {% translate "Удалить"%} </a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

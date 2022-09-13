@@ -1,0 +1,16 @@
+{
+    "users": {
+      "user1": {
+        "first_name": "John",
+        "last_name": "Black",
+        "username": "johnblack",
+        "password": "*aaaccc3"
+      },
+      "user2": {
+        "first_name": "Bob",
+        "last_name": "Green",
+        "username": "bobgreen",
+        "password": "*aaaccc5"
+      }
+    }
+  }

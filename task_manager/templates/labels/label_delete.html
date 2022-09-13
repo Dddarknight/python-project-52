@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% bootstrap_messages %}
+
+{% block content %}
+    <h1>
+        {% translate "Удаление метки"%}
+    </h1>
+    <br>
+    <div>
+        <p>{% translate "Вы уверены, что хотите удалить "%}{{ label.name }}{% translate " ?"%}</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-info"> {% translate "Да, удалить"%} </button>
+        </form>
+    </div>
+{% endblock content %}
