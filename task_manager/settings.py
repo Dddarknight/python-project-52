@@ -83,7 +83,7 @@ if IS_HEROKU:
 else:
     DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 
-DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+#DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
 AUTH_USER_MODEL = 'users.HexletUser'
 
