@@ -21,9 +21,9 @@ This project was built using these tools:
 | [poetry](https://python-poetry.org/) |  "Python dependency management and packaging made easy" |
 | [Py.Test](https://pytest.org) | "A mature full-featured Python testing tool" |
 
-### Link for the app on Heroku:
+### Heroku link:
 
-(https://dashboard.heroku.com/apps/fast-sea-58330)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](https://dashboard.heroku.com/apps/fast-sea-58330)
 
 ## Installation for contributors
 ```
