@@ -24,7 +24,8 @@ class TasksView(FilterView):
     filterset_class = TaskFilter
 
 
-class TaskCreateView(SetAuthorMixin,
+class TaskCreateView(SuccessMessageMixin,
+                     SetAuthorMixin,
                      CreateView):
     template_name = 'tasks/task_create.html'
     form_class = TaskCreationForm
