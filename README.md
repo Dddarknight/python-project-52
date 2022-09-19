@@ -33,13 +33,13 @@ $ pip install poetry
 $ make install
 $ touch .env
 
-*You have to write into .env file SECRET_KEY for Django app and token for Rollbar. See .env.example.*
-*To get SECRET_KEY for Django app:*
+You have to write into .env file SECRET_KEY for Django app and token for Rollbar. See .env.example.
+To get SECRET_KEY for Django app:
 $ python manage.py shell
 >>> from django.core.management.utils import get_random_secret_key
 >>> get_random_secret_key()
 
-*Then add new SECRET_KEY to .env file*
+Then add new SECRET_KEY to .env file
 
 $ make migrate
 $ make run
