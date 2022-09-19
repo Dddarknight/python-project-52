@@ -30,7 +30,8 @@ class UserRegistrationForm(UserCreationForm):
                                           'autofocus': True,
                                           'class': 'form-control', }),
                                error_messages={'unique': _(
-                                   'Пользователь с таким именем уже существует')})
+                                   'Пользователь с таким именем'
+                                   ' уже существует')})
     password1 = forms.CharField(label=_('Пароль'),
                                 label_suffix='',
                                 required=True,
