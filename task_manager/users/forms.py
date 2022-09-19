@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.contrib.auth.forms import UserCreationForm
-from task_manager.users.models import HexletUser
+from django.contrib.auth import get_user_model
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -28,7 +28,9 @@ class UserRegistrationForm(UserCreationForm):
                                widget=forms.TextInput(
                                    attrs={'placeholder': _('Имя пользователя'),
                                           'autofocus': True,
-                                          'class': 'form-control', }))
+                                          'class': 'form-control', }),
+                               error_messages={'unique': _(
+                                'Пользователь с таким именем уже существует')})
     password1 = forms.CharField(label=_('Пароль'),
                                 label_suffix='',
                                 required=True,
@@ -50,10 +52,6 @@ class UserRegistrationForm(UserCreationForm):
                                         'class': 'form-control', }))
 
     class Meta:
-        model = HexletUser
+        model = get_user_model()
         fields = (
             'first_name', 'last_name', 'username', 'password1', 'password2')
-
-
-class HexletUserChangeForm(UserRegistrationForm):
-    pass

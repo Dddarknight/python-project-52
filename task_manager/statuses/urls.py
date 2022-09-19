@@ -5,12 +5,12 @@ from task_manager.statuses import views
 urlpatterns = [
     path('', views.StatusesView.as_view(), name='statuses'),
     path('create/',
-         views.StatusCreationFormView.as_view(),
+         views.StatusCreateView.as_view(),
          name='status_create'),
     path('<int:pk>/update/',
-         views.UpdateStatusView.as_view(),
+         views.StatusUpdateView.as_view(),
          name='status_update'),
     path('<int:pk>/delete/',
-         views.DeleteStatusView.as_view(),
+         views.StatusDeleteView.as_view(),
          name='status_delete'),
 ]

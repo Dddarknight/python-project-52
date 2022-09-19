@@ -3,6 +3,7 @@ from django.utils import timezone
 from task_manager.users.models import HexletUser
 from task_manager.statuses.models import Statuses
 from task_manager.labels.models import Labels
+from django.urls import reverse_lazy
 
 
 class Tasks(models.Model):
@@ -21,3 +22,7 @@ class Tasks(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        url = reverse_lazy('tasks')
+        return f'{url}{self.id}'

@@ -13,7 +13,7 @@
     </h1>
     <br>
     <div>
-        <p>{% translate "Вы уверены, что хотите удалить "%}{{ status.name }}{% translate " ?"%}</p>
+        <p>{% translate "Вы уверены, что хотите удалить "%}{{ object }}{% translate " ?"%}</p>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-info"> {% translate "Да, удалить"%} </button>

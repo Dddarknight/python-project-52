@@ -22,7 +22,9 @@ class TaskCreationForm(ModelForm):
         required=True,
         widget=forms.TextInput(attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
-                                      'style': 'width: 800px;', }))
+                                      'style': 'width: 800px;', }),
+        error_messages={'unique': _(
+            'Task с таким Имя уже существует')})
     description = forms.CharField(
         label=_('Описание'),
         label_suffix='',
@@ -48,56 +50,6 @@ class TaskCreationForm(ModelForm):
     labels = forms.ModelMultipleChoiceField(
         label=_('Метки'),
         label_suffix='',
-        required=False,
-        widget=forms.SelectMultiple(
-            attrs={'placeholder': _('Метки'),
-                   'style': 'min-height: 50px; width: 800px;', }),
-        queryset=Labels.objects.all())
-
-    class Meta:
-        model = Tasks
-        fields = ('name', 'description', 'status', 'executor', 'labels')
-
-
-class TaskUpdateForm(TaskCreationForm):
-    name = forms.CharField(
-        label=_('Имя'),
-        label_suffix='',
-        initial='',
-        required=True,
-        widget=forms.TextInput(attrs={'placeholder': _('Имя'),
-                                      'class': 'form-control',
-                                      'style': 'width: 800px;', }))
-    description = forms.CharField(
-        label=_('Описание'),
-        label_suffix='',
-        initial='',
-        required=True,
-        widget=forms.Textarea(attrs={'placeholder': _('Описание'),
-                                     'class': 'form-control',
-                                     'style': 'width: 800px;', }))
-    status = forms.ModelChoiceField(
-        label=_('Статус'),
-        label_suffix='',
-        initial='',
-        required=True,
-        widget=forms.Select(
-            attrs={'placeholder': _('Статус'),
-                   'style': 'min-height: 50px; width: 800px;', }),
-        queryset=Statuses.objects.all())
-    executor = forms.ModelChoiceField(
-        label=_('Исполнитель'),
-        label_suffix='',
-        initial='',
-        required=False,
-        widget=forms.Select(
-            attrs={'placeholder': _('Исполнитель'),
-                   'style': 'min-height: 50px; width: 800px;', }),
-        queryset=HexletUser.objects.exclude(Q(is_superuser=True)))
-    labels = forms.ModelMultipleChoiceField(
-        label=_('Метки'),
-        label_suffix='',
-        initial='',
         required=False,
         widget=forms.SelectMultiple(
             attrs={'placeholder': _('Метки'),

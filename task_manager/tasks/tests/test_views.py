@@ -4,6 +4,7 @@ from task_manager.tasks.forms import TaskCreationForm
 from django.test import Client
 from task_manager.utils import get_test_data
 from task_manager.tests import TestObjectsCreation
+from django.urls import reverse_lazy
 
 
 test_container = TestObjectsCreation()
@@ -67,6 +68,7 @@ class TasksTest(TestCase):
     def test_update_task(self):
         c = Client()
         user1 = test_container.create_user1()
+        c.force_login(user1)
         user2 = test_container.create_user2()
         status = test_container.create_status1()
         task1 = test_container.create_task1(status, user1, user2)
@@ -93,10 +95,10 @@ class TasksTest(TestCase):
     def test_delete_task(self):
         c = Client()
         user1 = test_container.create_user1()
+        c.force_login(user1)
         user2 = test_container.create_user2()
         status = test_container.create_status1()
         task = test_container.create_task1(status, user1, user2)
-        c.force_login(user1)
         c.post(f'/tasks/{task.id}/delete/')
         tasks = []
         for task in Tasks.objects.all():
@@ -106,6 +108,7 @@ class TasksTest(TestCase):
     def test_filter(self):
         c = Client()
         user1 = test_container.create_user1()
+        c.force_login(user1)
         user2 = test_container.create_user2()
         status1 = test_container.create_status1()
         status2 = test_container.create_status2()
@@ -119,7 +122,6 @@ class TasksTest(TestCase):
         task2.labels.add(label3)
         task3 = test_container.create_task3(status2, user1, user2)
         task3.labels.add(label1)
-        c.force_login(user1)
         data1 = {'status': status1.id,
                  'executor': '',
                  'labels': '',
@@ -181,3 +183,58 @@ class TasksTest(TestCase):
             self.test_data['tasks']['task1']['name'])
         assert Tasks.objects.get(id=task.id).author == user1
         assert Tasks.objects.get(id=task.id).executor == user2
+
+    def test_create_view(self):
+        c = Client()
+        response = c.get(reverse_lazy('task_create'))
+        required_content_elements = ['Имя', 'Описание', 'Статус',
+                                     'Исполнитель', 'Метки']
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tasks/task_create.html')
+        for element in required_content_elements:
+            self.assertContains(response, element)
+
+    def test_update_view(self):
+        c = Client()
+        user = test_container.create_user1()
+        c.force_login(user)
+        status = test_container.create_status1()
+        test_container.create_task1(status, user, user)
+        response = c.get(reverse_lazy('task_update', args=['1']))
+        required_content_elements = ['Имя', 'Описание', 'Статус',
+                                     'Исполнитель', 'Метки']
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tasks/task_update.html')
+        for element in required_content_elements:
+            self.assertContains(response, element)
+
+    def test_delete_view(self):
+        c = Client()
+        user = test_container.create_user1()
+        c.force_login(user)
+        status = test_container.create_status1()
+        test_container.create_task1(status, user, user)
+        response = c.get(reverse_lazy('task_delete', args=['1']))
+        required_content_elements = [
+            'Удаление задачи',
+            'Вы уверены, что хотите удалить task1 ?']
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tasks/task_delete.html')
+        for element in required_content_elements:
+            self.assertContains(response, element)
+
+    def test_tasks_view(self):
+        c = Client()
+        user = test_container.create_user1()
+        c.force_login(user)
+        status = test_container.create_status1()
+        test_container.create_task1(status, user, user)
+        response = c.get(reverse_lazy('tasks'))
+        required_content_elements = [
+            'ID', 'Имя', 'Статус', 'Автор', 'Исполнитель', 'Дата создания',
+            'Изменить', 'Удалить',
+            '1', 'task1', 'status1', 'John Black', 'John Black']
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'tasks/tasks_filter.html')
+        for element in required_content_elements:
+            self.assertContains(response, element)

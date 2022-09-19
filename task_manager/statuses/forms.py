@@ -11,22 +11,9 @@ class StatusCreationForm(ModelForm):
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
-                                      'style': 'max-width: 24em', }))
-
-    class Meta:
-        model = Statuses
-        fields = ('name',)
-
-
-class StatusUpdateForm(StatusCreationForm):
-    name = forms.CharField(label=_('Имя'),
-                           label_suffix='',
-                           required=True,
-                           initial='',
-                           widget=forms.TextInput(
-                               attrs={'placeholder': _('Имя'),
-                                      'class': 'form-control',
-                                      'style': 'max-width: 24em', }))
+                                      'style': 'max-width: 24em', }),
+                           error_messages={'unique': _(
+                                'Task status с таким Имя уже существует')})
 
     class Meta:
         model = Statuses

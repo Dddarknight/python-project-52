@@ -11,7 +11,9 @@ class LabelCreationForm(ModelForm):
                            widget=forms.TextInput(
                                attrs={'placeholder': _('Имя'),
                                       'class': 'form-control',
-                                      'style': 'max-width: 24em', }))
+                                      'style': 'max-width: 24em', }),
+                           error_messages={'unique': _(
+                               'Label с таким Имя уже существует')})
 
     class Meta:
         model = Labels

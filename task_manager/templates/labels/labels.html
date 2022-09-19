@@ -28,9 +28,9 @@
                     <td> {{ label.name }} </td>
                     <td> {{ label.created_at }} </td>
                     <td>
-                        <a href="/labels/{{ label.id }}/update/"> {% translate "Изменить"%} </a>
+                        <a href="{{ label.get_absolute_url }}/update/"> {% translate "Изменить"%} </a>
                         <br>
-                        <a href="/labels/{{ label.id }}/delete/"> {% translate "Удалить"%} </a>
+                        <a href="{{ label.get_absolute_url }}/delete/"> {% translate "Удалить"%} </a>
                     </td>
                 </tr>
                 {% endfor %}

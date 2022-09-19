@@ -23,7 +23,7 @@ This project was built using these tools:
 
 ### Heroku link:
 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](https://dashboard.heroku.com/apps/fast-sea-58330)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](https://fast-sea-58330.herokuapp.com/)
 
 ## Installation for contributors
 ```
@@ -31,6 +31,15 @@ $ git clone git@github.com:Dddarknight/python-project-52.git
 $ cd python-project-lvl3
 $ pip install poetry
 $ make install
+$ touch .env
+
+*You have to write into .env file SECRET_KEY for Django app and token for Rollbar. See .env.example.*
+*To get SECRET_KEY for Django app:*
+$ python manage.py shell
+>>> from django.core.management.utils import get_random_secret_key
+>>> get_random_secret_key()
+
+$ make migrate
 $ make run
 ```
 
