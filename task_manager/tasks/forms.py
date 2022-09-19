@@ -29,9 +29,9 @@ class TaskCreationForm(ModelForm):
         label=_('Описание'),
         label_suffix='',
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': _('Описание'),
-                                      'class': 'form-control',
-                                      'style': 'width: 800px;', }))
+        widget=forms.Textarea(attrs={'placeholder': _('Описание'),
+                                     'class': 'form-control',
+                                     'style': 'width: 800px;', }))
     status = forms.ModelChoiceField(
         label=_('Статус'),
         label_suffix='',
