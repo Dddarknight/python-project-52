@@ -22,7 +22,7 @@ class Tasks(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         url = reverse_lazy('tasks')
         return f'{url}{self.id}'

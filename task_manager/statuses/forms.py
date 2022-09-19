@@ -13,7 +13,7 @@ class StatusCreationForm(ModelForm):
                                       'class': 'form-control',
                                       'style': 'max-width: 24em', }),
                            error_messages={'unique': _(
-                                'Task status с таким Имя уже существует')})
+                               'Task status с таким Имя уже существует')})
 
     class Meta:
         model = Statuses
