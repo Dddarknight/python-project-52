@@ -8,6 +8,9 @@ test_container = TestObjectsCreation()
 
 class UserModelTest(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
+
     def test_user_creation(self):
-        user = test_container.create_user1()
-        self.assertTrue(isinstance(user, get_user_model()))
+        self.assertTrue(isinstance(self.user, get_user_model()))

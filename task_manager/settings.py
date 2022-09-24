@@ -14,15 +14,9 @@ ROLLBAR_ACCESS_TOKEN = os.environ.get('ROLLBAR_ACCESS_TOKEN')
 
 IS_HEROKU = "DYNO" in os.environ
 
-if not IS_HEROKU:
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = True if not IS_HEROKU else False
 
-if IS_HEROKU:
-    ALLOWED_HOSTS = ['webserver', "*"]
-else:
-    ALLOWED_HOSTS = ['webserver', '127.0.0.1']
+ALLOWED_HOSTS = ['webserver', "*"] if IS_HEROKU else ['webserver', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -79,10 +73,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'task_manager.wsgi.application'
 
-if IS_HEROKU:
-    DATABASE_URL = 'postgresql://<postgresql>'
-else:
-    DATABASE_URL = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+DATABASE_URL = 'postgresql://<postgresql>' if IS_HEROKU else (
+    'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'))
 
 DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 
@@ -116,6 +108,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
 
 BOOTSTRAP4 = {
     "css_url": {

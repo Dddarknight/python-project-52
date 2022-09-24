@@ -12,60 +12,25 @@ class TestObjectsCreation(TestCase):
     test_data_tasks = get_test_data('tasks.json')
     test_data_labels = get_test_data('labels.json')
 
-    def create_user1(self):
+    def create_user(self, user):
         return HexletUser.objects.create(
-            first_name=self.test_data_users['users']['user1']['first_name'],
-            last_name=self.test_data_users['users']['user1']['last_name'],
-            username=self.test_data_users['users']['user1']['username'],
-            password=self.test_data_users['users']['user1']['password'])
-
-    def create_user2(self):
-        return HexletUser.objects.create(
-            first_name=self.test_data_users['users']['user2']['first_name'],
-            last_name=self.test_data_users['users']['user2']['last_name'],
-            username=self.test_data_users['users']['user2']['username'],
-            password=self.test_data_users['users']['user2']['password'])
-
-    def create_status1(self):
+            first_name=self.test_data_users['users'][user]['first_name'],
+            last_name=self.test_data_users['users'][user]['last_name'],
+            username=self.test_data_users['users'][user]['username'],
+            password=self.test_data_users['users'][user]['password'])
+    
+    def create_status(self, status):
         return Statuses.objects.create(
-            name=self.test_data_statuses['statuses']['status1']['name'])
+            name=self.test_data_statuses['statuses'][status]['name'])
 
-    def create_status2(self):
-        return Statuses.objects.create(
-            name=self.test_data_statuses['statuses']['status2']['name'])
-
-    def create_task1(self, status, author, executor):
+    def create_task(self, task, status, author, executor):
         return Tasks.objects.create(
-            name=self.test_data_tasks['tasks']['task1']['name'],
-            description=self.test_data_tasks['tasks']['task1']['name'],
+            name=self.test_data_tasks['tasks'][task]['name'],
+            description=self.test_data_tasks['tasks'][task]['name'],
             status=status,
             author=author,
             executor=executor)
 
-    def create_task2(self, status, author, executor):
-        return Tasks.objects.create(
-            name=self.test_data_tasks['tasks']['task2']['name'],
-            description=self.test_data_tasks['tasks']['task2']['name'],
-            status=status,
-            author=author,
-            executor=executor)
-
-    def create_task3(self, status, author, executor):
-        return Tasks.objects.create(
-            name=self.test_data_tasks['tasks']['task3']['name'],
-            description=self.test_data_tasks['tasks']['task3']['name'],
-            status=status,
-            author=author,
-            executor=executor)
-
-    def create_label1(self):
+    def create_label(self, label):
         return Labels.objects.create(
-            name=self.test_data_labels['labels']['label1']['name'])
-
-    def create_label2(self):
-        return Labels.objects.create(
-            name=self.test_data_labels['labels']['label2']['name'])
-
-    def create_label3(self):
-        return Labels.objects.create(
-            name=self.test_data_labels['labels']['label3']['name'])
+            name=self.test_data_labels['labels'][label]['name'])

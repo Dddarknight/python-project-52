@@ -8,69 +8,102 @@ from django.urls import reverse_lazy
 
 test_container = TestObjectsCreation()
 
+class UserCreationTest(TestCase):
 
-class UserTest(TestCase):
-    test_data = get_test_data('users.json')
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1_data = get_test_data('users.json')['users']['user1']
+        cls.first_name = cls.user1_data['first_name']
+        cls.last_name = cls.user1_data['last_name']
+        cls.username = cls.user1_data['username']
+        cls.password = cls.user1_data['password']
 
     def test_register_user(self):
         c = Client()
-        data = {'first_name': self.test_data['users']['user1']['first_name'],
-                'last_name': self.test_data['users']['user1']['last_name'],
-                'username': self.test_data['users']['user1']['username'],
-                'password1': self.test_data['users']['user1']['password'],
-                'password2': self.test_data['users']['user1']['password']}
+        data = {'first_name': self.first_name,
+                'last_name': self.last_name,
+                'username': self.username,
+                'password1': self.password,
+                'password2': self.password}
         c.post('/users/create/', data)
         assert HexletUser.objects.get(id=1).first_name == (
-            self.test_data['users']['user1']['first_name'])
+            self.first_name)
         assert HexletUser.objects.get(id=1).last_name == (
-            self.test_data['users']['user1']['last_name'])
+            self.last_name)
         assert HexletUser.objects.get(id=1).username == (
-            self.test_data['users']['user1']['username'])
+            self.username)
+
+
+class UserUpdateDeleteTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
+        cls.user1_data = get_test_data('users.json')['users']['user1']
+        cls.user2_data = get_test_data('users.json')['users']['user2']
+        cls.first_name = cls.user1_data['first_name']
+        cls.last_name = cls.user1_data['last_name']
+        cls.username = cls.user2_data['username']
+        cls.password = cls.user1_data['password']
 
     def test_update_user(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
+        c.force_login(self.user)
         new_data = {
-            'first_name': (self.test_data['users']['user1']['first_name']),
-            'last_name': self.test_data['users']['user1']['last_name'],
-            'username': self.test_data['users']['user2']['username'],
-            'password1': self.test_data['users']['user1']['password'],
-            'password2': self.test_data['users']['user1']['password']}
-        c.post(f'/users/{user.id}/update/', new_data)
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'username': self.username,
+            'password1': self.password,
+            'password2': self.password}
+        c.post(f'/users/{self.user.id}/update/', new_data)
         assert HexletUser.objects.get(id=1).first_name == (
-            self.test_data['users']['user1']['first_name'])
+            self.first_name)
         assert HexletUser.objects.get(id=1).last_name == (
-            self.test_data['users']['user1']['last_name'])
+            self.last_name)
         assert HexletUser.objects.get(id=1).username == (
-            self.test_data['users']['user2']['username'])
+            self.username)
 
     def test_delete_user(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        c.post(f'/users/{user.id}/delete/')
+        c.force_login(self.user)
+        c.post(f'/users/{self.user.id}/delete/')
         users = []
         for user in HexletUser.objects.all():
             users.append(user)
         assert not users
 
+
+class UserDeleteDeniedTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.user2 = test_container.create_user('user2')
+        cls.status = test_container.create_status('status1')
+        cls.task = test_container.create_task(
+            'task1', cls.status, cls.user1, cls.user2)
+        cls.user1_data = get_test_data('users.json')['users']['user1']
+        cls.user2_data = get_test_data('users.json')['users']['user2']
+
     def test_delete_user_with_task(self):
         c = Client()
-        user1 = test_container.create_user1()
-        user2 = test_container.create_user2()
-        user1_id = user1.id
-        user2_id = user2.id
-        status = test_container.create_status1()
-        test_container.create_task1(status, user1, user2)
-        c.force_login(user1)
-        c.post(f'/users/{user1.id}/delete/')
+        user1_id = self.user1.id
+        user2_id = self.user2.id
+        c.force_login(self.user1)
+        c.post(f'/users/{self.user1.id}/delete/')
         assert HexletUser.objects.get(id=user1_id).username == (
-            self.test_data['users']['user1']['username'])
-        c.force_login(user2)
-        c.post(f'/users/{user2.id}/delete/')
+            self.user1_data['username'])
+        c.force_login(self.user2)
+        c.post(f'/users/{self.user2.id}/delete/')
         assert HexletUser.objects.get(id=user2_id).username == (
-            self.test_data['users']['user2']['username'])
+            self.user2_data['username'])
+
+
+class UserViewsTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
 
     def test_create_view(self):
         c = Client()
@@ -89,8 +122,7 @@ class UserTest(TestCase):
 
     def test_update_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('update', args=['1']))
         required_content_elements = [
             'Имя', 'Фамилия', 'Имя пользователя',
@@ -106,8 +138,7 @@ class UserTest(TestCase):
 
     def test_delete_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('delete', args=['1']))
         required_content_elements = [
             'Удаление пользователя',
@@ -119,8 +150,7 @@ class UserTest(TestCase):
 
     def test_users_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('users'))
         required_content_elements = [
             'ID', 'Имя пользователя', 'Полное имя', 'Дата создания',

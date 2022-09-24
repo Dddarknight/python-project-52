@@ -1,7 +1,12 @@
 from django import forms
 from django.utils.translation import gettext as _
 from django.contrib.auth.forms import AuthenticationForm
-from task_manager.users.models import HexletUser
+from django.contrib.auth import get_user_model
+
+
+MESSAGE_LOG_IN_ERROR = _("Пожалуйста, введите правильные имя"
+                         " пользователя и пароль. Оба поля "
+                         "могут быть чувствительны к регистру.")
 
 
 class HexletLoginForm(AuthenticationForm):
@@ -21,7 +26,8 @@ class HexletLoginForm(AuthenticationForm):
                                    attrs={'placeholder': _('Пароль'),
                                           'class': 'form-control',
                                           'style': 'max-width: 24em', }))
+    error_messages = {'invalid_login': MESSAGE_LOG_IN_ERROR}
 
     class Meta:
-        model = HexletUser
+        model = get_user_model()
         fields = ['username', 'password']

@@ -8,36 +8,39 @@ test_container = TestObjectsCreation()
 
 
 class TaskFormTest(TestCase):
-    test_data = get_test_data('tasks.json')
+    
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
+        cls.status = test_container.create_status('status1')
+        cls.task1_data = get_test_data('tasks.json')['tasks']['task1']
+        cls.name = cls.task1_data['name']
+        cls.description = cls.task1_data['description']
 
     def test_valid_form(self):
-        user = test_container.create_user1()
-        status = test_container.create_status1()
-        data = {'name': self.test_data['tasks']['task1']['name'],
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
-                'executor': user}
+        data = {'name': self.name,
+                'description': self.description,
+                'status': self.status,
+                'executor': self.user}
         form = TaskCreationForm(data=data)
         self.assertTrue(form.is_valid())
-        data = {'name': self.test_data['tasks']['task1']['name'],
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
+        data = {'name': self.name,
+                'description': self.description,
+                'status': self.status,
                 'executor': ''}
         form = TaskCreationForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
-        user = test_container.create_user1()
-        status = test_container.create_status1()
         data = {'name': '',
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
-                'executor': user}
+                'description': self.description,
+                'status': self.status,
+                'executor': self.user}
         form = TaskCreationForm(data=data)
         self.assertFalse(form.is_valid())
-        data = {'name': self.test_data['tasks']['task1']['name'],
+        data = {'name': self.name,
                 'description': '',
-                'status': status,
-                'executor': user}
+                'status': self.status,
+                'executor': self.user}
         form = TaskCreationForm(data=data)
         self.assertFalse(form.is_valid())

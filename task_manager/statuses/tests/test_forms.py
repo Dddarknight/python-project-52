@@ -8,15 +8,20 @@ test_container = TestObjectsCreation()
 
 
 class StatusFormTest(TestCase):
-    test_data = get_test_data('statuses.json')
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.status1_data = (
+            get_test_data('statuses.json')['statuses']['status1'])
+        cls.name = cls.status1_data['name']
 
     def test_valid_form(self):
-        data = {'name': self.test_data['statuses']['status1']['name']}
+        data = {'name': self.name}
         form = StatusCreationForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
-        test_container.create_status1()
-        data = {'name': self.test_data['statuses']['status1']['name']}
+        test_container.create_status('status1')
+        data = {'name': self.name}
         form = StatusCreationForm(data=data)
         self.assertFalse(form.is_valid())

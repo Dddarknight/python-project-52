@@ -8,6 +8,9 @@ test_container = TestObjectsCreation()
 
 class StatusModelTest(TestCase):
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.status = test_container.create_status('status1')
+
     def test_status_creation(self):
-        status = test_container.create_status1()
-        self.assertTrue(isinstance(status, Statuses))
+        self.assertTrue(isinstance(self.status, Statuses))

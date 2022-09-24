@@ -10,179 +10,182 @@ from django.urls import reverse_lazy
 test_container = TestObjectsCreation()
 
 
-class TasksTest(TestCase):
-    test_data = get_test_data('tasks.json')
+class TaskCreationTest(TestCase):
 
-    def test_valid_form(self):
-        user = test_container.create_user1()
-        status = test_container.create_status1()
-        data = {'name': self.test_data['tasks']['task1']['name'],
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
-                'executor': user}
-        form = TaskCreationForm(data=data)
-        self.assertTrue(form.is_valid())
-        data = {'name': self.test_data['tasks']['task1']['name'],
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
-                'executor': ''}
-        form = TaskCreationForm(data=data)
-        self.assertTrue(form.is_valid())
-
-    def test_invalid_form(self):
-        user = test_container.create_user1()
-        status = test_container.create_status1()
-        data = {'name': '',
-                'description': self.test_data['tasks']['task1']['description'],
-                'status': status,
-                'executor': user}
-        form = TaskCreationForm(data=data)
-        self.assertFalse(form.is_valid())
-        data = {'name': self.test_data['tasks']['task1']['name'],
-                'description': '',
-                'status': status,
-                'executor': user}
-        form = TaskCreationForm(data=data)
-        self.assertFalse(form.is_valid())
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.user2 = test_container.create_user('user2')
+        cls.status = test_container.create_status('status1')
+        cls.task1_data = get_test_data('tasks.json')['tasks']['task1']
+        cls.name = cls.task1_data['name']
+        cls.description = cls.task1_data['description']
 
     def test_create_task(self):
         c = Client()
-        user1 = test_container.create_user1()
-        user2 = test_container.create_user2()
-        c.force_login(user1)
-        status = test_container.create_status1()
+        c.force_login(self.user1)
         task_data = {
-            'name': self.test_data['tasks']['task1']['name'],
-            'description': (self.test_data['tasks']['task1']['description']),
-            'status': status.id,
-            'executor': user2.id}
+            'name': self.name,
+            'description': self.description,
+            'status': self.status.id,
+            'executor': self.user2.id}
         c.post('/tasks/create/', task_data)
         assert Tasks.objects.get(id=1).name == (
-            self.test_data['tasks']['task1']['name'])
+            self.name)
         assert Tasks.objects.get(id=1).description == (
-            self.test_data['tasks']['task1']['description'])
-        assert Tasks.objects.get(id=1).executor == user2
-        assert Tasks.objects.get(id=1).status == status
-        assert Tasks.objects.get(id=1).author == user1
+            self.description)
+        assert Tasks.objects.get(id=1).executor == self.user2
+        assert Tasks.objects.get(id=1).status == self.status
+        assert Tasks.objects.get(id=1).author == self.user1
+
+
+class TaskUpdateDeleteTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.user2 = test_container.create_user('user2')
+        cls.status = test_container.create_status('status1')
+        cls.task1 = test_container.create_task(
+            'task1', cls.status, cls.user1, cls.user2)
+        cls.task2 = test_container.create_task(
+            'task2', cls.status, cls.user2, cls.user1)
+        cls.task1_data = get_test_data('tasks.json')['tasks']['task1']
+        cls.task2_data = get_test_data('tasks.json')['tasks']['task2']
+        cls.task3_data = get_test_data('tasks.json')['tasks']['task3']
+        cls.name1 = cls.task1_data['name']
+        cls.description1 = cls.task1_data['description']
+        cls.name2 = cls.task2_data['name']
+        cls.description2 = cls.task2_data['description']
+        cls.name3 = cls.task3_data['name']
+        cls.description3 = cls.task3_data['description']
 
     def test_update_task(self):
         c = Client()
-        user1 = test_container.create_user1()
-        c.force_login(user1)
-        user2 = test_container.create_user2()
-        status = test_container.create_status1()
-        task1 = test_container.create_task1(status, user1, user2)
-        test_container.create_task2(status, user2, user1)
-        new_data = {'name': self.test_data['tasks']['task2']['name'],
-                    'description': (
-                        self.test_data['tasks']['task1']['description']),
-                    'status': status.id,
-                    'executor': user1.id}
-        c.post(f'/tasks/{task1.id}/update/', new_data)
-        assert Tasks.objects.get(id=task1.id).name == (
-            self.test_data['tasks']['task1']['name'])
-        assert Tasks.objects.get(id=task1.id).executor == user2
-        new_data = {'name': self.test_data['tasks']['task3']['name'],
-                    'description': (
-                        self.test_data['tasks']['task1']['description']),
-                    'status': status.id,
-                    'executor': user1.id}
-        c.post(f'/tasks/{task1.id}/update/', new_data)
-        assert Tasks.objects.get(id=task1.id).name == (
-            self.test_data['tasks']['task3']['name'])
-        assert Tasks.objects.get(id=task1.id).executor == user1
+        c.force_login(self.user1)
+        new_data = {'name': self.name2,
+                    'description': self.description1,
+                    'status': self.status.id,
+                    'executor': self.user1.id}
+        c.post(f'/tasks/{self.task1.id}/update/', new_data)
+        assert Tasks.objects.get(id=self.task1.id).name == (
+            self.name1)
+        assert Tasks.objects.get(id=self.task1.id).executor == self.user2
+        new_data = {'name': self.name3,
+                    'description': self.description1,
+                    'status': self.status.id,
+                    'executor': self.user1.id}
+        c.post(f'/tasks/{self.task1.id}/update/', new_data)
+        assert Tasks.objects.get(id=self.task1.id).name == (
+            self.name3)
+        assert Tasks.objects.get(id=self.task1.id).executor == self.user1
 
     def test_delete_task(self):
         c = Client()
-        user1 = test_container.create_user1()
-        c.force_login(user1)
-        user2 = test_container.create_user2()
-        status = test_container.create_status1()
-        task = test_container.create_task1(status, user1, user2)
-        c.post(f'/tasks/{task.id}/delete/')
+        c.force_login(self.user1)
+        c.post(f'/tasks/{self.task1.id}/delete/')
+        c.force_login(self.user2)
+        c.post(f'/tasks/{self.task2.id}/delete/')
         tasks = []
         for task in Tasks.objects.all():
             tasks.append(task)
         assert not tasks
 
+
+class TaskFilterAndNoPermissionTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.user2 = test_container.create_user('user2')
+        cls.status1 = test_container.create_status('status1')
+        cls.status2 = test_container.create_status('status2')
+        cls.label1 = test_container.create_label('label1')
+        cls.label2 = test_container.create_label('label2')
+        cls.label3 = test_container.create_label('label3')
+        cls.task1 = test_container.create_task(
+            'task1', cls.status1, cls.user1, cls.user2)
+        cls.task1.labels.add(cls.label1)
+        cls.task1.labels.add(cls.label2)
+        cls.task2 = test_container.create_task(
+            'task2', cls.status2, cls.user2, cls.user1)
+        cls.task2.labels.add(cls.label3)
+        cls.task3 = test_container.create_task(
+            'task3', cls.status2, cls.user1, cls.user2)
+        cls.task3.labels.add(cls.label1)
+        cls.task1_data = get_test_data('tasks.json')['tasks']['task1']
+        cls.name1 = cls.task1_data['name']
+
     def test_filter(self):
         c = Client()
-        user1 = test_container.create_user1()
-        c.force_login(user1)
-        user2 = test_container.create_user2()
-        status1 = test_container.create_status1()
-        status2 = test_container.create_status2()
-        label1 = test_container.create_label1()
-        label2 = test_container.create_label2()
-        label3 = test_container.create_label3()
-        task1 = test_container.create_task1(status1, user1, user2)
-        task1.labels.add(label1)
-        task1.labels.add(label2)
-        task2 = test_container.create_task2(status2, user2, user1)
-        task2.labels.add(label3)
-        task3 = test_container.create_task3(status2, user1, user2)
-        task3.labels.add(label1)
-        data1 = {'status': status1.id,
+        c.force_login(self.user1)
+        data1 = {'status': self.status1.id,
                  'executor': '',
                  'labels': '',
                  'only_author': ''}
         response = c.get('/tasks/', data1)
-        self.assertContains(response, task1.name)
-        self.assertNotContains(response, task2.name)
-        self.assertNotContains(response, task3.name)
-        data2 = {'status': status2.id,
-                 'executor': user1.id,
+        self.assertContains(response, self.task1.name)
+        self.assertNotContains(response, self.task2.name)
+        self.assertNotContains(response, self.task3.name)
+        data2 = {'status': self.status2.id,
+                 'executor': self.user1.id,
                  'labels': '',
                  'only_author': ''}
         response = c.get('/tasks/', data2)
-        self.assertNotContains(response, task1.name)
-        self.assertContains(response, task2.name)
-        self.assertNotContains(response, task3.name)
+        self.assertNotContains(response, self.task1.name)
+        self.assertContains(response, self.task2.name)
+        self.assertNotContains(response, self.task3.name)
         data3 = {'status': '',
                  'executor': '',
                  'labels': '',
                  'only_author': True}
         response = c.get('/tasks/', data3)
-        self.assertContains(response, task1.name)
-        self.assertNotContains(response, task2.name)
-        self.assertContains(response, task3.name)
-        data4 = {'status': status1.id,
+        self.assertContains(response, self.task1.name)
+        self.assertNotContains(response, self.task2.name)
+        self.assertContains(response, self.task3.name)
+        data4 = {'status': self.status1.id,
                  'executor': '',
                  'labels': '',
                  'only_author': True}
         response = c.get('/tasks/', data4)
-        self.assertContains(response, task1.name)
-        self.assertNotContains(response, task2.name)
-        self.assertNotContains(response, task3.name)
+        self.assertContains(response, self.task1.name)
+        self.assertNotContains(response, self.task2.name)
+        self.assertNotContains(response, self.task3.name)
         data5 = {'status': '',
                  'executor': '',
-                 'labels': label1.id,
+                 'labels': self.label1.id,
                  'only_author': ''}
         response = c.get('/tasks/', data5)
-        self.assertContains(response, task1.name)
-        self.assertNotContains(response, task2.name)
-        self.assertContains(response, task3.name)
-        data6 = {'status': status2.id,
+        self.assertContains(response, self.task1.name)
+        self.assertNotContains(response, self.task2.name)
+        self.assertContains(response, self.task3.name)
+        data6 = {'status': self.status2.id,
                  'executor': '',
-                 'labels': label1.id,
+                 'labels': self.label1.id,
                  'only_author': ''}
         response = c.get('/tasks/', data6)
-        self.assertNotContains(response, task1.name)
-        self.assertNotContains(response, task2.name)
-        self.assertContains(response, task3.name)
+        self.assertNotContains(response, self.task1.name)
+        self.assertNotContains(response, self.task2.name)
+        self.assertContains(response, self.task3.name)
 
     def test_delete_task_by_not_author(self):
         c = Client()
-        user1 = test_container.create_user1()
-        user2 = test_container.create_user2()
-        status = test_container.create_status1()
-        task = test_container.create_task1(status, user1, user2)
-        c.force_login(user2)
-        c.post(f'/tasks/{task.id}/delete/')
-        assert Tasks.objects.get(id=task.id).name == (
-            self.test_data['tasks']['task1']['name'])
-        assert Tasks.objects.get(id=task.id).author == user1
-        assert Tasks.objects.get(id=task.id).executor == user2
+        c.force_login(self.user2)
+        c.post(f'/tasks/{self.task1.id}/delete/')
+        assert Tasks.objects.get(id=self.task1.id).name == (
+            self.name1)
+        assert Tasks.objects.get(id=self.task1.id).author == self.user1
+        assert Tasks.objects.get(id=self.task1.id).executor == self.user2
+
+
+class TaskViewsTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
+        cls.status = test_container.create_status('status1')
+        cls.task1 = test_container.create_task(
+            'task1', cls.status, cls.user, cls.user)
 
     def test_create_view(self):
         c = Client()
@@ -196,10 +199,7 @@ class TasksTest(TestCase):
 
     def test_update_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        status = test_container.create_status1()
-        test_container.create_task1(status, user, user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('task_update', args=['1']))
         required_content_elements = ['Имя', 'Описание', 'Статус',
                                      'Исполнитель', 'Метки']
@@ -210,10 +210,7 @@ class TasksTest(TestCase):
 
     def test_delete_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        status = test_container.create_status1()
-        test_container.create_task1(status, user, user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('task_delete', args=['1']))
         required_content_elements = [
             'Удаление задачи',
@@ -225,10 +222,7 @@ class TasksTest(TestCase):
 
     def test_tasks_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        status = test_container.create_status1()
-        test_container.create_task1(status, user, user)
+        c.force_login(self.user)
         response = c.get(reverse_lazy('tasks'))
         required_content_elements = [
             'ID', 'Имя', 'Статус', 'Автор', 'Исполнитель', 'Дата создания',

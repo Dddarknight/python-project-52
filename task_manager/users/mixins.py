@@ -15,7 +15,7 @@ MESSAGE_DELETE_USER_WITH_TASKS_DENIED = _("Невозможно удалить �
                                           "потому что он используется")
 
 
-class HexletUserPassesTestMixin(UserPassesTestMixin):
+class UserPassesTestMixin_(UserPassesTestMixin):
 
     def test_func(self):
         if self.kwargs['pk'] != self.request.user.id:
@@ -27,7 +27,7 @@ class HexletUserPassesTestMixin(UserPassesTestMixin):
         return redirect(reverse_lazy('users'))
 
 
-class UserPermissionsMixin(LoginRequiredMixin, HexletUserPassesTestMixin):
+class UserPermissionsMixin(LoginRequiredMixin, UserPassesTestMixin_):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(request, MESSAGE_NOT_LOGGED_IN)

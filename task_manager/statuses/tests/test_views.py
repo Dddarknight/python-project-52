@@ -9,48 +9,81 @@ from django.urls import reverse_lazy
 test_container = TestObjectsCreation()
 
 
-class StatusesTest(TestCase):
-    test_data = get_test_data('statuses.json')
+class StatusCreationTest(TestCase):
+    
+    @classmethod
+    def setUpTestData(cls):
+        cls.status1_data = (
+            get_test_data('statuses.json')['statuses']['status1'])
+        cls.name = cls.status1_data['name']
 
     def test_create_status(self):
         c = Client()
-        status_data = {'name': self.test_data['statuses']['status1']['name']}
+        status_data = {'name': self.name}
         c.post('/statuses/create/', status_data)
         assert Statuses.objects.get(id=1).name == (
-            self.test_data['statuses']['status1']['name'])
+            self.name)
+
+
+class StatusUpdateDeleteTest(TestCase):
+    
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.status1 = test_container.create_status('status1')
+        cls.status1_data = (
+            get_test_data('statuses.json')['statuses']['status1'])
+        cls.name1 = cls.status1_data['name']
+        cls.status2_data = (
+            get_test_data('statuses.json')['statuses']['status2'])
+        cls.name2 = cls.status2_data['name']
 
     def test_update_status(self):
         c = Client()
-        user1 = test_container.create_user1()
-        c.force_login(user1)
-        status = test_container.create_status1()
-        new_data = {'name': self.test_data['statuses']['status2']['name']}
-        c.post(f'/statuses/{status.id}/update/', data=new_data)
-        assert Statuses.objects.get(id=status.id).name == (
-            self.test_data['statuses']['status2']['name'])
+        c.force_login(self.user1)
+        new_data = {'name': self.name2}
+        c.post(f'/statuses/{self.status1.id}/update/', data=new_data)
+        assert Statuses.objects.get(id=self.status1.id).name == (
+            self.name2)
 
     def test_delete_status(self):
         c = Client()
-        user1 = test_container.create_user1()
-        c.force_login(user1)
-        status = test_container.create_status1()
-        c.post(f'/statuses/{status.id}/delete/')
+        c.force_login(self.user1)
+        c.post(f'/statuses/{self.status1.id}/delete/')
         statuses = []
         for status in Statuses.objects.all():
             statuses.append(status)
         assert not statuses
 
+
+class StatusDeleteDeniedTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user1 = test_container.create_user('user1')
+        cls.user2 = test_container.create_user('user2')
+        cls.status = test_container.create_status('status1')
+        cls.task = test_container.create_task(
+            'task1', cls.status, cls.user1, cls.user2)
+        cls.status1_data = (
+            get_test_data('statuses.json')['statuses']['status1'])
+        cls.name1 = cls.status1_data['name']
+
     def test_delete_status_with_task(self):
         c = Client()
-        user1 = test_container.create_user1()
-        user2 = test_container.create_user2()
-        status = test_container.create_status1()
-        status_id = status.id
-        test_container.create_task1(status, user1, user2)
-        c.force_login(user1)
-        c.post(f'/statuses/{status.id}/delete/')
+        status_id = self.status.id
+        c.force_login(self.user1)
+        c.post(f'/statuses/{self.status.id}/delete/')
         assert Statuses.objects.get(id=status_id).name == (
-            self.test_data['statuses']['status1']['name'])
+            self.name1)
+
+
+class StatusViewsTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = test_container.create_user('user1')
+        cls.status = test_container.create_status('status1')
 
     def test_create_view(self):
         c = Client()
@@ -63,9 +96,7 @@ class StatusesTest(TestCase):
 
     def test_update_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        test_container.create_status1()
+        c.force_login(self.user)
         response = c.get(reverse_lazy('status_update', args=['1']))
         required_content_elements = ['Имя']
         self.assertEqual(response.status_code, 200)
@@ -75,9 +106,7 @@ class StatusesTest(TestCase):
 
     def test_delete_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        test_container.create_status1()
+        c.force_login(self.user)
         response = c.get(reverse_lazy('status_delete', args=['1']))
         required_content_elements = [
             'Удаление статуса',
@@ -89,9 +118,7 @@ class StatusesTest(TestCase):
 
     def test_statuses_view(self):
         c = Client()
-        user = test_container.create_user1()
-        c.force_login(user)
-        test_container.create_status1()
+        c.force_login(self.user)
         response = c.get(reverse_lazy('statuses'))
         required_content_elements = [
             'ID', 'Имя', 'Дата создания',

@@ -8,15 +8,20 @@ test_container = TestObjectsCreation()
 
 
 class LabelFormTest(TestCase):
-    test_data = get_test_data('labels.json')
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.label1_data = (
+            get_test_data('labels.json')['labels']['label1'])
+        cls.name = cls.label1_data['name']
 
     def test_valid_form(self):
-        data = {'name': self.test_data['labels']['label1']['name']}
+        data = {'name': self.name}
         form = LabelCreationForm(data=data)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form(self):
-        test_container.create_label1()
-        data = {'name': self.test_data['labels']['label1']['name']}
+        test_container.create_label('label1')
+        data = {'name': self.name}
         form = LabelCreationForm(data=data)
         self.assertFalse(form.is_valid())
