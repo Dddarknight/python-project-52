@@ -10,7 +10,7 @@ test_container = TestObjectsCreation()
 
 
 class StatusCreationTest(TestCase):
-    
+
     @classmethod
     def setUpTestData(cls):
         cls.status1_data = (
@@ -26,7 +26,7 @@ class StatusCreationTest(TestCase):
 
 
 class StatusUpdateDeleteTest(TestCase):
-    
+
     @classmethod
     def setUpTestData(cls):
         cls.user1 = test_container.create_user('user1')

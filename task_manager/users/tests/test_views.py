@@ -8,6 +8,7 @@ from django.urls import reverse_lazy
 
 test_container = TestObjectsCreation()
 
+
 class UserCreationTest(TestCase):
 
     @classmethod

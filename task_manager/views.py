@@ -1,10 +1,8 @@
 from django.views import generic
 from django.utils.translation import gettext as _
 from task_manager.forms import HexletLoginForm
-from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
 from task_manager.mixins import MessageLogOutMixin
 
 

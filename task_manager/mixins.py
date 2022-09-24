@@ -1,7 +1,5 @@
 from django.utils.translation import gettext as _
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.shortcuts import redirect
 
 
 MESSAGE_LOGGED_OUT = _("Вы разлогинены.")

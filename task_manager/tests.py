@@ -18,7 +18,7 @@ class TestObjectsCreation(TestCase):
             last_name=self.test_data_users['users'][user]['last_name'],
             username=self.test_data_users['users'][user]['username'],
             password=self.test_data_users['users'][user]['password'])
-    
+
     def create_status(self, status):
         return Statuses.objects.create(
             name=self.test_data_statuses['statuses'][status]['name'])

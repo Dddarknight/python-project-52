@@ -8,7 +8,7 @@ test_container = TestObjectsCreation()
 
 
 class TaskFormTest(TestCase):
-    
+
     @classmethod
     def setUpTestData(cls):
         cls.user = test_container.create_user('user1')
