@@ -13,9 +13,9 @@ from task_manager.tasks.mixins import SetAuthorMixin
 from task_manager.tasks.mixins import TaskDeletePermissionsMixin
 
 
-MESSAGE_TASK_CREATE_SUCCESS = _("Задача успешно создана")
-MESSAGE_TASK_UPDATE_SUCCESS = _("Задача успешно изменена")
-MESSAGE_TASK_DELETE_SUCCESS = _("Задача успешно удалена")
+TASK_CREATE_SUCCESS_MESSAGE = _("Задача успешно создана")
+TASK_UPDATE_SUCCESS_MESSAGE = _("Задача успешно изменена")
+TASK_DELETE_SUCCESS_MESSAGE = _("Задача успешно удалена")
 
 
 class TasksView(FilterView):
@@ -30,7 +30,7 @@ class TaskCreateView(SuccessMessageMixin,
     template_name = 'tasks/task_create.html'
     form_class = TaskCreationForm
     success_url = reverse_lazy('tasks')
-    success_message = MESSAGE_TASK_CREATE_SUCCESS
+    success_message = TASK_CREATE_SUCCESS_MESSAGE
 
 
 class TaskUpdateView(SuccessMessageMixin,
@@ -40,7 +40,7 @@ class TaskUpdateView(SuccessMessageMixin,
     template_name = 'tasks/task_update.html'
     form_class = TaskCreationForm
     success_url = reverse_lazy('tasks')
-    success_message = MESSAGE_TASK_UPDATE_SUCCESS
+    success_message = TASK_UPDATE_SUCCESS_MESSAGE
     login_url = reverse_lazy('login')
     redirect_field_name = None
 
@@ -52,7 +52,7 @@ class TaskDeleteView(TaskDeletePermissionsMixin,
     model = Tasks
     template_name = 'tasks/task_delete.html'
     success_url = reverse_lazy('tasks')
-    success_message = MESSAGE_TASK_DELETE_SUCCESS
+    success_message = TASK_DELETE_SUCCESS_MESSAGE
     login_url = reverse_lazy('login')
     redirect_field_name = None
 

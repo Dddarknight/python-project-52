@@ -10,16 +10,16 @@ from task_manager.users.mixins import UserWithTaskCheckMixin
 from django.urls import reverse_lazy
 
 
-MESSAGE_REGISTRATION_SUCCESS = _("Пользователь успешно зарегистрирован")
-MESSAGE_UPDATE_USER_SUCCESS = _("Пользователь успешно изменён")
-MESSAGE_DELETE_SUCCESS = _("Пользователь успешно удалён")
+REGISTRATION_SUCCESS_MESSAGE = _("Пользователь успешно зарегистрирован")
+UPDATE_USER_SUCCESS_MESSAGE = _("Пользователь успешно изменён")
+DELETE_SUCCESS_MESSAGE = _("Пользователь успешно удалён")
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
     template_name = 'users/registration.html'
     form_class = UserRegistrationForm
     success_url = reverse_lazy('login')
-    success_message = MESSAGE_REGISTRATION_SUCCESS
+    success_message = REGISTRATION_SUCCESS_MESSAGE
 
 
 class UsersView(ListView):
@@ -35,7 +35,7 @@ class UserUpdateView(UserPermissionsMixin,
     template_name = 'users/update.html'
     form_class = UserRegistrationForm
     success_url = reverse_lazy('users')
-    success_message = MESSAGE_UPDATE_USER_SUCCESS
+    success_message = UPDATE_USER_SUCCESS_MESSAGE
     login_url = reverse_lazy('login')
     redirect_field_name = None
 
@@ -47,4 +47,4 @@ class UserDeleteView(UserPermissionsMixin,
     model = get_user_model()
     template_name = 'users/delete.html'
     success_url = reverse_lazy('users')
-    success_message = MESSAGE_DELETE_SUCCESS
+    success_message = DELETE_SUCCESS_MESSAGE

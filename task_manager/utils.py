@@ -2,9 +2,12 @@ import json
 import os
 
 
+FIXTURES_DIR_NAME = 'fixtures'
+
+
 def get_fixture_path(file_name):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(current_dir, 'fixtures', file_name)
+    return os.path.join(current_dir, FIXTURES_DIR_NAME, file_name)
 
 
 def read(file_path):

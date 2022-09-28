@@ -1,12 +1,13 @@
-from django.test import TestCase
-from task_manager.labels.models import Labels
 from django.test import Client
-from task_manager.utils import get_test_data
-from task_manager.tests import TestObjectsCreation
+from django.test import TestCase
 from django.urls import reverse_lazy
 
+from task_manager.labels.models import Labels
+from task_manager.test_container import TestContainer
+from task_manager.utils import get_test_data
 
-test_container = TestObjectsCreation()
+
+test_container = TestContainer()
 
 
 class LabelCreationTest(TestCase):

@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 
-MESSAGE_LABEL_DELETE_DENIED = _("Невозможно удалить метку, "
+LABEL_DELETE_DENIED_MESSAGE = _("Невозможно удалить метку, "
                                 "потому что она используется")
 
 
@@ -16,7 +16,7 @@ class LabelWithTaskCheckMixin:
         label = Labels.objects.get(id=self.kwargs['pk'])
         for task in Tasks.objects.all():
             if label in task.labels.all():
-                messages.error(self.request, MESSAGE_LABEL_DELETE_DENIED)
+                messages.error(self.request, LABEL_DELETE_DENIED_MESSAGE)
                 return redirect(reverse_lazy('labels'))
         valid = super().form_valid(form)
         return valid

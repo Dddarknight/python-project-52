@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 
-MESSAGE_STATUS_DELETE_DENIED = _("Невозможно удалить статус, "
+STATUS_DELETE_DENIED_MESSAGE = _("Невозможно удалить статус, "
                                  "потому что он используется")
 
 
@@ -15,7 +15,7 @@ class StatusWithTaskCheckMixin:
         if Tasks.objects.all().exists():
             if self.kwargs['pk'] in list(
                     Tasks.objects.values_list('status', flat=True)):
-                messages.error(self.request, MESSAGE_STATUS_DELETE_DENIED)
+                messages.error(self.request, STATUS_DELETE_DENIED_MESSAGE)
                 return redirect(reverse_lazy('statuses'))
         valid = super().form_valid(form)
         return valid

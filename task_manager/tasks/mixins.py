@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
 
-MESSAGE_TASK_DELETE_DENIED = _("Задачу может удалить только её автор.")
+TASK_DELETE_DENIED_MESSAGE = _("Задачу может удалить только её автор.")
 
 
 class SetAuthorMixin:
@@ -22,7 +22,7 @@ class TaskDeletePermissionsMixin:
     def form_valid(self, form):
         task = Tasks.objects.get(id=self.kwargs['pk'])
         if self.request.user.id != task.author.id:
-            messages.error(self.request, MESSAGE_TASK_DELETE_DENIED)
+            messages.error(self.request, TASK_DELETE_DENIED_MESSAGE)
             return redirect(reverse_lazy('tasks'))
         valid = super().form_valid(form)
         return valid

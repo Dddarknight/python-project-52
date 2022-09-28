@@ -1,10 +1,11 @@
 from django.test import TestCase
+
 from task_manager.statuses.forms import StatusCreationForm
+from task_manager.test_container import TestContainer
 from task_manager.utils import get_test_data
-from task_manager.tests import TestObjectsCreation
 
 
-test_container = TestObjectsCreation()
+test_container = TestContainer()
 
 
 class StatusFormTest(TestCase):

@@ -9,9 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from task_manager.statuses.mixins import StatusWithTaskCheckMixin
 
 
-MESSAGE_STATUS_CREATE_SUCCESS = _("Статус успешно создан")
-MESSAGE_STATUS_UPDATE_SUCCESS = _("Статус успешно изменён")
-MESSAGE_STATUS_DELETE_SUCCESS = _("Статус успешно удалён")
+STATUS_CREATE_SUCCESS_MESSAGE = _("Статус успешно создан")
+STATUS_UPDATE_SUCCESS_MESSAGE = _("Статус успешно изменён")
+STATUS_DELETE_SUCCESS_MESSAGE = _("Статус успешно удалён")
 
 
 class StatusesView(ListView):
@@ -23,7 +23,7 @@ class StatusCreateView(SuccessMessageMixin, CreateView):
     template_name = 'statuses/status_create.html'
     form_class = StatusCreationForm
     success_url = reverse_lazy('statuses')
-    success_message = MESSAGE_STATUS_CREATE_SUCCESS
+    success_message = STATUS_CREATE_SUCCESS_MESSAGE
 
 
 class StatusUpdateView(SuccessMessageMixin,
@@ -33,7 +33,7 @@ class StatusUpdateView(SuccessMessageMixin,
     template_name = 'statuses/status_update.html'
     form_class = StatusCreationForm
     success_url = reverse_lazy('statuses')
-    success_message = MESSAGE_STATUS_UPDATE_SUCCESS
+    success_message = STATUS_UPDATE_SUCCESS_MESSAGE
     login_url = reverse_lazy('login')
     redirect_field_name = None
 
@@ -45,6 +45,6 @@ class StatusDeleteView(StatusWithTaskCheckMixin,
     model = Statuses
     template_name = 'statuses/status_delete.html'
     success_url = reverse_lazy('statuses')
-    success_message = MESSAGE_STATUS_DELETE_SUCCESS
+    success_message = STATUS_DELETE_SUCCESS_MESSAGE
     login_url = reverse_lazy('login')
     redirect_field_name = None

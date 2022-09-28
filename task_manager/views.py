@@ -6,8 +6,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.mixins import MessageLogOutMixin
 
 
-MESSAGE_LOGGED_IN = _("Вы залогинены")
-MESSAGE_LOGGED_OUT = _("Вы разлогинены.")
+LOGGED_IN_MESSAGE = _("Вы залогинены")
 
 
 class IndexView(generic.TemplateView):
@@ -17,7 +16,7 @@ class IndexView(generic.TemplateView):
 class HexletLoginView(SuccessMessageMixin, LoginView):
     template_name = 'login.html'
     form_class = HexletLoginForm
-    success_message = MESSAGE_LOGGED_IN
+    success_message = LOGGED_IN_MESSAGE
 
 
 class HexletLogoutView(MessageLogOutMixin, LogoutView):

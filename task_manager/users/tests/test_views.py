@@ -1,12 +1,13 @@
 from django.test import TestCase
-from task_manager.users.models import HexletUser
 from django.test import Client
-from task_manager.utils import get_test_data
-from task_manager.tests import TestObjectsCreation
 from django.urls import reverse_lazy
 
+from task_manager.users.models import HexletUser
+from task_manager.utils import get_test_data
+from task_manager.test_container import TestContainer
 
-test_container = TestObjectsCreation()
+
+test_container = TestContainer()
 
 
 class UserCreationTest(TestCase):

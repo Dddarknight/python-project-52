@@ -8,10 +8,10 @@ from django.contrib.auth import login, authenticate
 from task_manager.tasks.models import Tasks
 
 
-MESSAGE_CHANGE_USER_DENIED = _("У вас нет прав для изменения "
+CHANGE_USER_DENIED_MESSAGE = _("У вас нет прав для изменения "
                                "другого пользователя.")
-MESSAGE_NOT_LOGGED_IN = _("Вы не авторизованы! Пожалуйста, выполните вход.")
-MESSAGE_DELETE_USER_WITH_TASKS_DENIED = _("Невозможно удалить пользователя, "
+NOT_LOGGED_IN_MESSAGE = _("Вы не авторизованы! Пожалуйста, выполните вход.")
+DELETE_USER_WITH_TASKS_DENIED_MESSAGE = _("Невозможно удалить пользователя, "
                                           "потому что он используется")
 
 
@@ -19,7 +19,7 @@ class UserPassesTestMixin_(UserPassesTestMixin):
 
     def test_func(self):
         if self.kwargs['pk'] != self.request.user.id:
-            messages.error(self.request, MESSAGE_CHANGE_USER_DENIED)
+            messages.error(self.request, CHANGE_USER_DENIED_MESSAGE)
             return False
         return True
 
@@ -30,7 +30,7 @@ class UserPassesTestMixin_(UserPassesTestMixin):
 class UserPermissionsMixin(LoginRequiredMixin, UserPassesTestMixin_):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.error(request, MESSAGE_NOT_LOGGED_IN)
+            messages.error(request, NOT_LOGGED_IN_MESSAGE)
             return redirect(reverse_lazy('login'))
         return super().dispatch(request, *args, **kwargs)
 
@@ -54,7 +54,7 @@ class UserWithTaskCheckMixin:
             self.kwargs['pk'] in list(
                 Tasks.objects.values_list('author', flat=True))
         ):
-            messages.error(self.request, MESSAGE_DELETE_USER_WITH_TASKS_DENIED)
+            messages.error(self.request, DELETE_USER_WITH_TASKS_DENIED_MESSAGE)
             return redirect(reverse_lazy('users'))
         valid = super().form_valid(form)
         return valid
