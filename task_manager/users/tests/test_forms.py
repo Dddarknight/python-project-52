@@ -51,9 +51,9 @@ class UserInvalidFormTest(TestCase):
                                                  password1,
                                                  password2):
         data = {'first_name': first_name,
-                 'last_name': last_name,
-                 'username': username,
-                 'password1': password1,
-                 'password2': password2}
+                'last_name': last_name,
+                'username': username,
+                'password1': password1,
+                'password2': password2}
         form = UserRegistrationForm(data=data)
         self.assertFalse(form.is_valid())
