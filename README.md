@@ -23,7 +23,7 @@ This project was built using these tools:
 
 ### Heroku link:
 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=fast-sea-58330)](https://fast-sea-58330.herokuapp.com/)
+[![Heroku](https://pyheroku-badge.herokuapp.com/?app=fast-sea-58330)](https://fast-sea-58330.herokuapp.com/)
 
 ## Installation for contributors
 ```
