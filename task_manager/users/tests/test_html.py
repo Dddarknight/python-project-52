@@ -53,7 +53,12 @@ class UsersTest(LiveServerTestCase):
             By.XPATH, "//form/input[@type='submit']").click()
         sleep(1)
         assert "Пользователь успешно зарегистрирован" in (
-            self.driver.page_source)
+            self.driver.page_source) or (
+                "The user was registered successfully" in (
+                    self.driver.page_source
+                )
+            )
+
         self.driver.get('%s%s' % (self.live_server_url, self.url_users))
         sleep(1)
         assert self.first_name in self.driver.page_source
@@ -69,16 +74,25 @@ class UsersTest(LiveServerTestCase):
         self.driver.find_element(
             By.XPATH, "//form/input[@type='submit']").click()
         sleep(1)
-        assert "Вы залогинены" in self.driver.page_source
-        expected_content_elements = ['Статусы', 'Метки', 'Задачи']
-        print(self.driver.page_source)
+        assert "Вы залогинены" in self.driver.page_source or (
+            "You are logged in." in self.driver.page_source
+        )
+        expected_content_elements = [
+            ['Статусы', 'Statuses'],
+            ['Метки', 'Labels'],
+            ['Задачи', 'Tasks'],
+        ]
         for element in expected_content_elements:
-            assert element in self.driver.page_source
+            assert element[0] in self.driver.page_source or (
+                element[1] in self.driver.page_source
+            )
 
         sleep(1)
         self.driver.get('%s%s' % (self.live_server_url, self.url_logout))
         sleep(1)
-        assert "Вы разлогинены." in self.driver.page_source
+        assert "Вы разлогинены." in self.driver.page_source or (
+            "You are logged out." in self.driver.page_source
+        )
         for element in expected_content_elements:
             assert element not in self.driver.page_source
 
@@ -147,7 +161,11 @@ class UsersUpdateTest(LiveServerTestCase):
             By.XPATH, "//form/button[@type='submit']").click()
         sleep(1)
         assert "Пользователь успешно изменён" in (
-            self.driver.page_source)
+            self.driver.page_source) or (
+                "User updated successfully" in (
+                    self.driver.page_source
+                )
+            )
 
         self.driver.get('%s%s' % (self.live_server_url, self.url_users))
         sleep(1)
