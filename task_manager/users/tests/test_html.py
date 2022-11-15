@@ -55,7 +55,7 @@ class UsersTest(LiveServerTestCase):
         assert "Пользователь успешно зарегистрирован" in (
             self.driver.page_source
         ) or ("The user was registered successfully" in (
-                    self.driver.page_source))
+            self.driver.page_source))
 
         self.driver.get('%s%s' % (self.live_server_url, self.url_users))
         sleep(1)
