@@ -108,7 +108,11 @@ class UsersUpdateTest(LiveServerTestCase):
         cookie = self.client.cookies['sessionid']
         self.driver.get(self.live_server_url)
         self.driver.add_cookie(
-            {'name': 'sessionid', 'value': cookie.value, 'secure': False, 'path': '/'})
+            {'name': 'sessionid',
+             'value': cookie.value,
+             'secure': False,
+             'path': '/'}
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -172,7 +176,11 @@ class UsersDeleteTest(LiveServerTestCase):
         cookie = self.client.cookies['sessionid']
         self.driver.get(self.live_server_url)
         self.driver.add_cookie(
-            {'name': 'sessionid', 'value': cookie.value, 'secure': False, 'path': '/'})
+            {'name': 'sessionid',
+             'value': cookie.value,
+             'secure': False,
+             'path': '/'}
+        )
 
     @classmethod
     def tearDownClass(cls):
