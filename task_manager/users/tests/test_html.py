@@ -71,6 +71,7 @@ class UsersTest(LiveServerTestCase):
         sleep(1)
         assert "Вы залогинены" in self.driver.page_source
         expected_content_elements = ['Статусы', 'Метки', 'Задачи']
+        print(self.driver.page_source)
         for element in expected_content_elements:
             assert element in self.driver.page_source
 
