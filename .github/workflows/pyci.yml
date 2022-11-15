@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.9]
-        firefox: [ '84.0', 'latest-beta', 'latest-devedition', 'latest-esr', 'latest' ]
+        firefox: [ 'latest' ]
       
     steps:
       - uses: actions/checkout@v2

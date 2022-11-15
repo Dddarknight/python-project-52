@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 from time import sleep
 
 from task_manager.utils import get_test_data
@@ -25,7 +26,10 @@ class UsersTest(LiveServerTestCase):
         cls.url_users = "/users/"
         cls.url_login = "/login/"
         cls.url_logout = "/logout/"
-        cls.driver = webdriver.Firefox()
+
+        options = Options()
+        options.headless = True
+        cls.driver = webdriver.Firefox(options=options)
 
     @classmethod
     def tearDownClass(cls):
@@ -100,7 +104,9 @@ class UsersUpdateTest(LiveServerTestCase):
         cls.url_users = "/users/"
         cls.url_update = f"/users/{id}/update"
 
-        cls.driver = webdriver.Firefox()
+        options = Options()
+        options.headless = True
+        cls.driver = webdriver.Firefox(options=options)
 
     def setUp(self):
         super().setUp()
@@ -168,7 +174,9 @@ class UsersDeleteTest(LiveServerTestCase):
         cls.url_users = "/users/"
         cls.url_delete = f"/users/{id}/delete"
 
-        cls.driver = webdriver.Firefox()
+        options = Options()
+        options.headless = True
+        cls.driver = webdriver.Firefox(options=options)
 
     def setUp(self):
         super().setUp()
