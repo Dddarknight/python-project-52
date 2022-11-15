@@ -3,23 +3,19 @@ Task Manager is an application, which provides the oppotunity for task managemen
 
 ____
 
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/Dddarknight/python-project-52/workflows/hexlet-check/badge.svg)](https://github.com/Dddarknight/python-project-52/actions)
-
-[![Python CI](https://github.com/Dddarknight/python-project-52/actions/workflows/pyci.yml/badge.svg)](https://github.com/Dddarknight/python-project-52/actions)
-
-
-### CodeClimate:
-<a href="https://codeclimate.com/github/Dddarknight/python-project-52/maintainability"><img src="https://api.codeclimate.com/v1/badges/bd5f746a84f1581c4360/maintainability" /></a>
-
-<a href="https://codeclimate.com/github/Dddarknight/python-project-52/test_coverage"><img src="https://api.codeclimate.com/v1/badges/bd5f746a84f1581c4360/test_coverage" /></a>
+### Hexlet tests, linter status and CodeClimate:
+[![Actions Status](https://github.com/Dddarknight/python-project-52/workflows/hexlet-check/badge.svg)](https://github.com/Dddarknight/python-project-52/actions) [![Python CI](https://github.com/Dddarknight/python-project-52/actions/workflows/pyci.yml/badge.svg)](https://github.com/Dddarknight/python-project-52/actions) <a href="https://codeclimate.com/github/Dddarknight/python-project-52/maintainability"><img src="https://api.codeclimate.com/v1/badges/bd5f746a84f1581c4360/maintainability" /></a> <a href="https://codeclimate.com/github/Dddarknight/python-project-52/test_coverage"><img src="https://api.codeclimate.com/v1/badges/bd5f746a84f1581c4360/test_coverage" /></a>
 
 ## Links
 This project was built using these tools:
 | Tool | Description |
 |----------|---------|
+| [Django ](https://www.djangoproject.com/) |  "A high-level Python web framework" |
 | [poetry](https://python-poetry.org/) |  "Python dependency management and packaging made easy" |
 | [Py.Test](https://pytest.org) | "A mature full-featured Python testing tool" |
+| [django-filter](https://django-filter.readthedocs.io/en/stable/) | "Allows to filter down a queryset based on a model’s fields" |
+| [Selenium](https://selenium-python.readthedocs.io/index.html) | "For automating web applications for testing purposes" |
+
 
 ### Heroku link:
 
@@ -28,7 +24,7 @@ This project was built using these tools:
 ## Installation for contributors
 ```
 $ git clone git@github.com:Dddarknight/python-project-52.git
-$ cd python-project-lvl3
+$ cd python-project-52
 $ pip install poetry
 $ make install
 $ touch .env
