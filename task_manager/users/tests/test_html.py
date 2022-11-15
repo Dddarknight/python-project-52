@@ -92,7 +92,9 @@ class UsersTest(LiveServerTestCase):
             "You are logged out." in self.driver.page_source
         )
         for element in expected_content_elements:
-            assert element not in self.driver.page_source
+            assert element[0] not in self.driver.page_source and (
+                element[1] not in self.driver.page_source
+            )
 
 
 class UsersUpdateTest(LiveServerTestCase):
